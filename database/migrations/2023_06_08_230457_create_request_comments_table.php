@@ -15,7 +15,6 @@ class CreateRequestCommentsTable extends Migration
     {
         Schema::create('request_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->text('text');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');

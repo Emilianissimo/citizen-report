@@ -17,8 +17,10 @@ class CreateRegionsTable extends Migration
             $table->id();
             $table->string('title_ru');
             $table->string('title_uz');
-            $table->string('title_oz');
-            $table->string('slug')->unique();
+            $table->string('slug_ru')->unique();
+            $table->string('slug_uz')->unique();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('regions');
             $table->timestamps();
         });
     }

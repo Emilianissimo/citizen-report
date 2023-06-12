@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Region;
+use App\Models\SocialRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -41,6 +43,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function regions()
+    {
+        return $this->belongsToMany(
+            Region::class,
+            'users__regions',
+            'user_id',
+            'region_id'
+        );
+    }
+
+    public function setRegions($ids)
+    {
+        if (is_null($ids)){
+            return;
+        }
+
+        $this->regions()->sync($ids);
+    }
+
+    public function socialRequestsAsAuthor()
+    {
+        return $this->hasMany(SocialRequest::class, 'author_id');
+    }
+
+    public function socialRequestsAsManager()
+    {
+        return $this->hasMany(SocialRequest::class, 'manager_id');
+    }
 
     public static function add(array $fields): self
     {

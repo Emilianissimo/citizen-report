@@ -16,9 +16,9 @@ class CreateSocialRequestsTable extends Migration
         Schema::create('social_requests', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('slug');
             $table->text('text');
-            $table->string('lat');
-            $table->string('long');
+            $table->text('coordinates');
             $table->text('report_from_manager')->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
             $table->foreign('status_id')->references('id')->on('request_statuses');
