@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Region;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class UsersController extends Controller
+class RegionsController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        $regions = Region::orderBy('created_at', 'DESC')->paginate(20);
+        return view('admin.regions.index', compact('regions'));
     }
 
     /**
@@ -29,7 +27,7 @@ class UsersController extends Controller
     public function create()
     {
         $regions = Region::pluck('title_ru', 'id')->all();
-        return view('admin.users.create', compact('regions'));
+        return view('admin.regions.create', compact('regions'));
     }
 
     /**
@@ -41,18 +39,14 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'      => 'required',
-            'phone'     => 'required|unique:users',
-            'password'  => 'required',
+            'title_ru' => 'required',
+            'title_uz' => 'required',
         ]);
+        $region = Region::add($request->all());
+        $region->setParent($request->get('parent_id'));
 
-        $user = User::add($request->all());
-        $user->setAdmin($request->filled('is_admin'));
-        $user->setStaff($request->filled('is_staff'));
-        $user->setRegions($request->get('regions'));
-        $user->generatePassword($request->get('password'));
+        return redirect()->route('regions.edit', $region->id);
 
-        return redirect()->route('users.edit', $user->id);
     }
 
     /**
@@ -63,9 +57,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $region = Region::find($id);
         $regions = Region::pluck('title_ru', 'id')->all();
-        return view('admin.users.edit', compact('user', 'regions'));
+        return view('admin.regions.edit', compact('region', 'regions'));
     }
 
     /**
@@ -77,21 +71,13 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-
         $this->validate($request, [
-            'name'      => 'required',
-            'phone'     => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
+            'title_ru' => 'required',
+            'title_uz' => 'required',
         ]);
-
-        $user->edit($request->all());
-        $user->setAdmin($request->filled('is_admin'));
-        $user->setStaff($request->filled('is_staff'));
-        $user->setRegions($request->get('regions'));
-        $user->generatePassword($request->get('password'));
+        $region = Region::find($id);
+        $region->edit($request->all());
+        $region->setParent($request->get('parent_id'));
 
         return redirect()->back();
     }
@@ -104,8 +90,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->remove();
-
+        Region::find($id)->remove();
         return;
     }
 }
