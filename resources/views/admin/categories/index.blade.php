@@ -29,7 +29,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Категории новостей</h3>
+              <h3 class="card-title">Категории проблем</h3>
               <div class="form-group" style="text-align: right">
                 <a href="{{route('categories.create')}}" class="btn btn-success">Добавить</a>
               </div>

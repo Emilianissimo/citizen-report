@@ -41,6 +41,10 @@ Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 
 'staff'], function(){
 	Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 	Route::post('/logout', [AuthController::class, 'logout'])->name('dashboard.logout');
+	Route::resource('/categories', 'CategoriesController');
+	Route::resource('/regions', 'RegionsController');
+	Route::resource('/statuses', 'RequestStatusesController');
+	Route::get('/requests', ['SocialRequestsController', 'index'])->name('social_requests.index');
 });
 
 Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 'middleware' => 

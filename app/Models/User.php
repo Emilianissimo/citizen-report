@@ -62,6 +62,11 @@ class User extends Authenticatable
         $this->regions()->sync($ids);
     }
 
+    public function getRegionIds(): array
+    {
+        return $this->regions()->pluck('id')->toArray();
+    }
+
     public function socialRequestsAsAuthor()
     {
         return $this->hasMany(SocialRequest::class, 'author_id');
