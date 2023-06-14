@@ -21,6 +21,31 @@ class CreateRequestsCategoriesTable extends Migration
             $table->foreign('request_id')->references('id')->on('social_requests');
             $table->timestamps();
         });
+
+        DB::table('requests__categories')->insert(
+            array(
+                'category_id' => 1,
+                'request_id' => 1,
+            )
+        );
+        DB::table('requests__categories')->insert(
+            array(
+                'category_id' => 1,
+                'request_id' => 2,
+            )
+        );
+        DB::table('requests__categories')->insert(
+            array(
+                'category_id' => 1,
+                'request_id' => 3,
+            )
+        );
+        DB::table('requests__categories')->insert(
+            array(
+                'category_id' => 1,
+                'request_id' => 4,
+            )
+        );
     }
 
     /**

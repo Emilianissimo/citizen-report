@@ -8,7 +8,20 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Статистика за все время</h1>
+            <div class="row">
+              <div class="col-md-6">
+                <h1 class="m-0 text-dark">Статистика за все время для: </h1>
+              </div>
+              <div class="col-md-6">
+                <form action="{{route('dashboard')}}" method="GET">
+                  <select class="form-control select2" onchange="{this.form.submit()}" name="region_id">
+                    @foreach($regions as $r)
+                    <option value="{{$r->id}}" @if ($region->id == $r->id) selected @endif>{{$r->title_ru}}</option>
+                    @endforeach
+                  </select>
+                </form>
+              </div>
+            </div>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -30,14 +43,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>$ordersNewAll->count()</h3>
+                <h3>{{$newRequests}}</h3>
 
-                <p>Новых заказов</p>
+                <p>Новых обращений</p>
               </div>
               <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="route('orders.index')" class="small-box-footer">Заказы <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer">  <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -45,9 +58,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>$buyPercent<sup style="font-size: 20px">%</sup></h3>
+                <h3>{{$solvedRequests}}</h3>
 
-                <p>Общая рентабельность</p>
+                <p>Решенных</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -60,14 +73,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>$postsAll->count() | $postsViewsAll<sup><i class="fa fa-eye"></i></sup></h3>
+                <h3>{{$processRequests}}</h3>
 
-                <p>Видео</p>
+                <p>В работе</p>
               </div>
               <div class="icon">
-                <i class="fas fa-video"></i>
+                <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="route('posts.index')" class="small-box-footer">Все видео <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer"> <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -75,14 +88,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>$users->count() | $usersStatus->count()</h3>
+                <h3>{{$unsolvedRequests}}</h3>
 
-                <p>Пользователи | Покупатели</p>
+                <p>Нерешенных</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="route('users.index')" class="small-box-footer">Все пользователи <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer"> <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

@@ -59,10 +59,12 @@
                     <td>{{$status->title_ru}}</td>
                     <td>{{$status->title_uz}}</td>
                     <td id="actions" style="padding: 10px;">
+                      @if(!in_array($status->id, [1,2,3,4]))
                       <a style="font-size: 25px" href="{{route('statuses.edit', $status->id)}}" class="fa fa-edit"></a>
                       <button  data-route="{{route('statuses.destroy', $status->id)}}" type="button" class="delete">
                         <i style="font-size: 25px" class="fa fa-trash"></i>
                       </button>
+                      @endif
                     </td>
                   </tr>
                   @endforeach

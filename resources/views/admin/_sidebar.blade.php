@@ -12,8 +12,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('requests.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'requests.')) active @endif">
-              <i class="nav-icon fa fa-list"></i>
+            <a href="{{route('social_requests.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'requests.')) active @endif">
+              <i class="nav-icon fa fa-user-plus"></i>
               <p>
                 <b>Обращения</b>
               </p>

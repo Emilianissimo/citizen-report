@@ -19,6 +19,8 @@ class CreateSocialRequestsTable extends Migration
             $table->string('slug');
             $table->text('text');
             $table->text('coordinates');
+            $table->text('address');
+            $table->integer('urgency')->default(0); # 0 - low, 1 - normal, 2 - high, 3 - urgent
             $table->text('report_from_manager')->nullable();
             $table->unsignedBigInteger('status_id')->nullable();
             $table->foreign('status_id')->references('id')->on('request_statuses');
@@ -30,6 +32,62 @@ class CreateSocialRequestsTable extends Migration
             $table->foreign('region_id')->references('id')->on('regions');
             $table->timestamps();
         });
+
+        DB::table('social_requests')->insert(
+            array(
+                'title' => 'Вымогают деньги 1',
+                'slug' => 'money_1',
+                'text' => 'много че можно написать',
+                'coordinates' => '34.2971631,69.2815243',
+                'address' => 'fake',
+                'urgency' => 0,
+                'status_id' => 1,
+                'author_id' => 1,
+                'region_id' => 1
+            )
+        );
+
+        DB::table('social_requests')->insert(
+            array(
+                'title' => 'Вымогают деньги 2',
+                'slug' => 'money_2',
+                'text' => 'много че можно написать',
+                'coordinates' => '35.2971631,69.2815243',
+                'address' => 'fake',
+                'urgency' => 1,
+                'status_id' => 1,
+                'author_id' => 1,
+                'region_id' => 1
+            )
+        );
+
+        DB::table('social_requests')->insert(
+            array(
+                'title' => 'Вымогают деньги 3',
+                'slug' => 'money_3',
+                'text' => 'много че можно написать',
+                'coordinates' => '36.2971631,69.2815243',
+                'address' => 'fake',
+                'urgency' => 2,
+                'status_id' => 1,
+                'author_id' => 1,
+                'region_id' => 2
+            )
+        );
+
+        DB::table('social_requests')->insert(
+            array(
+                'title' => 'Вымогают деньги 4',
+                'slug' => 'money_4',
+                'text' => 'много че можно написать',
+                'coordinates' => '33.2971631,69.2815243',
+                'address' => 'fake',
+                'urgency' => 3,
+                'status_id' => 1,
+                'author_id' => 1,
+                'region_id' => 3
+            )
+        );
     }
 
     /**

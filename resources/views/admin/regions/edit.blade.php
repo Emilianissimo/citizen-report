@@ -41,12 +41,12 @@
                     <label for="title_uz">Название Уз</label>
                     <input type="text" class="form-control" id="title_uz" placeholder="" value="{{$region->title_uz}}" name="title_uz">
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label>Родительский регион</label>
                     {{Form::select('parent_id',
                       $regions, $region->parent_id, ['class' => 'form-control select2 select2-danger', 'data-placeholder'=>'Выберите регион']
                     )}}
-                  </div>
+                  </div> -->
               </div>
              
               <div class="col-md-12">

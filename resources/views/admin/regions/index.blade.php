@@ -48,7 +48,7 @@
                     <th>ID</th>
                     <th>Название</th>
                     <th>Название Уз</th>
-                    <th>Родительский регион</th>
+                    <!-- <th>Родительский регион</th> -->
                     <th>Действия</th>
                   </tr>
                 </tfoot>
@@ -59,7 +59,7 @@
                     <td>{{$category->id}}</td>
                     <td>{{$category->title_ru}}</td>
                     <td>{{$category->title_uz}}</td>
-                    <td>{{$region->parent->title_ru}}</td>
+                    <!-- <td>{{$region->parent->title_ru}}</td> -->
                     <td id="actions" style="padding: 10px;">
                       <a style="font-size: 25px" href="{{route('regions.edit', $region->id)}}" class="fa fa-edit"></a>
                       <button  data-route="{{route('regions.destroy', $region->id)}}" type="button" class="delete">

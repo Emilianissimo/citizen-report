@@ -35,11 +35,15 @@
               <div class="col-md-6">
                   <div class="form-group">
                     <label for="title_ru">Название Ру <span style="color:red">*</span></label>
-                    <input type="text" class="form-control" id="title_ru" placeholder="" value="{{$statuses->title_ru}}" name="title_ru">
+                    <input type="text" class="form-control" id="title_ru" placeholder="" value="{{$status->title_ru}}" name="title_ru">
                   </div>
                   <div class="form-group">
                     <label for="title_uz">Название Уз</label>
-                    <input type="text" class="form-control" id="title_uz" placeholder="" value="{{$statuses->title_uz}}" name="title_uz">
+                    <input type="text" class="form-control" id="title_uz" placeholder="" value="{{$status->title_uz}}" name="title_uz">
+                  </div>
+                  <div class="form-group">
+                    <label for="color">Цвет</label>
+                    <input type="text" class="form-control" id="color" placeholder="" value="{{$status->color)}}" name="color">
                   </div>
               </div>
              

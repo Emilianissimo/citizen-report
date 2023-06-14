@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\SocialRequestsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,15 +19,6 @@ use App\Http\Controllers\Admin\AdminController;
 if (!strpos(Request::url(), "dashboard")) {
 
 	Route::get('/{vue_capture?}', function () {
-		if(!User::find(1)){
-			$user = User::add([
-				'name' => 'admin',
-				'phone' => 'admin',
-			]);
-			$user->is_admin = true;
-			$user->password = bcrypt('admin');
-			$user->save();
-		}
 		return view('welcome');
 	})->where('vue_capture', '[\/\w\.-]*');
 
@@ -44,7 +36,8 @@ Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 
 	Route::resource('/categories', 'CategoriesController');
 	Route::resource('/regions', 'RegionsController');
 	Route::resource('/statuses', 'RequestStatusesController');
-	Route::get('/requests', ['SocialRequestsController', 'index'])->name('social_requests.index');
+	Route::get('/requests', [SocialRequestsController::class, 'index'])->name('social_requests.index');
+	Route::get('/requests/{id}', [SocialRequestsController::class, 'show'])->name('social_requests.show');
 });
 
 Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 'middleware' => 

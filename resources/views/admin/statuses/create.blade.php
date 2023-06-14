@@ -40,6 +40,10 @@
                     <label for="title_uz">Название Уз</label>
                     <input type="text" class="form-control" id="title_uz" placeholder="" value="{{old('title_uz')}}" name="title_uz">
                   </div>
+                  <div class="form-group">
+                    <label for="color">Цвет</label>
+                    <input type="text" class="form-control" id="color" placeholder="" value="{{old('color')}}" name="color">
+                  </div>
               </div>
              
               <div class="col-md-12">

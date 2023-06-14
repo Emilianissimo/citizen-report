@@ -55,6 +55,10 @@ class RequestStatusesController extends Controller
      */
     public function edit($id)
     {
+        if(in_array($id, [1,2,3,4])){
+            return redirect()->back();
+        }
+
         $status = RequestStatus::find($id);
         return view('admin.statuses.edit', compact('status'));
     }
@@ -68,6 +72,10 @@ class RequestStatusesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(in_array($id, [1,2,3,4])){
+            return redirect()->back();
+        }
+
         $this->validate($request, [
             'title_ru' => 'required',
             'title_uz' => 'required',
@@ -86,6 +94,9 @@ class RequestStatusesController extends Controller
      */
     public function destroy($id)
     {
+        if(in_array($id, [1,2,3,4])){
+            return redirect()->back();
+        }
         RequestStatus::find($id)->remove();
         return;
     }

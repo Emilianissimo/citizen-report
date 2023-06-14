@@ -22,6 +22,22 @@ class CreateRequestCommentsTable extends Migration
             $table->foreign('request_id')->references('id')->on('social_requests');
             $table->timestamps();
         });
+
+        DB::table('request_comments')->insert(
+            array(
+                'text' => 'много че можно написать',
+                'user_id' => 1,
+                'request_id' => 1,
+            )
+        );
+
+        DB::table('request_comments')->insert(
+            array(
+                'text' => 'много че можно написать 2',
+                'user_id' => 1,
+                'request_id' => 1,
+            )
+        );
     }
 
     /**

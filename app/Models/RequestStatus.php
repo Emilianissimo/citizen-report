@@ -15,7 +15,7 @@ class RequestStatus extends Model
     public function sluggable(): array
     {
         return [
-            'slug_ru' => [
+            'slug' => [
                 'source' => 'title_ru',
             ],
         ];
@@ -24,6 +24,7 @@ class RequestStatus extends Model
     protected $fillable = [
         'title_ru',
         'title_uz',
+        'color',
     ];
 
     public function getTitle(string $lang): string

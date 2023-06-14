@@ -21,6 +21,15 @@ class CreateCategoriesTable extends Migration
             $table->string('slug_uz')->unique();
             $table->timestamps();
         });
+
+        DB::table('categories')->insert(
+            array(
+                'title_ru' => 'Коррупция',
+                'title_uz' => 'Korupsiya',
+                'slug_ru' => 'korruptsiya',
+                'slug_uz' => 'korupsiya',
+            )
+        );
     }
 
     /**

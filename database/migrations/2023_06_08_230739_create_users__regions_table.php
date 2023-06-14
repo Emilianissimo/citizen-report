@@ -21,6 +21,20 @@ class CreateUsersRegionsTable extends Migration
             $table->foreign('region_id')->references('id')->on('regions');
             $table->timestamps();
         });
+
+        DB::table('users__regions')->insert(
+            array(
+                'user_id' => 1,
+                'region_id' => 1,
+            )
+        );
+
+        DB::table('users__regions')->insert(
+            array(
+                'user_id' => 1,
+                'region_id' => 2,
+            )
+        );
     }
 
     /**
