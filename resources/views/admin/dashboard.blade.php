@@ -102,7 +102,7 @@
         </div>
         <!-- /.row -->
         <!-- Main row -->
-        <h3>Статистика за $month {{date('Y')}} года</h3>
+        <h3>@if(Auth::user()->is_admin) Общая @else Личная @endif cтатистика за все время (В будущем за месяц с фильтрами) </h3>
         <div class="row">
           <!-- bar chart -->
       
@@ -112,20 +112,20 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <h3>Статистика за {{date('Y')}} год</h3>
+            <h3>Статистика за {{date('Y')}} год (Future feature)</h3>
           </div> 
           <div class="col-md-6">
             <label for="years">Выберите год: </label>
             <select class="form-control select2" name="years" id="years">
-              foreach($years as $year)
-              <option if (date('Y') == $year) selected endif>$year</option>
-              endforeach
+              @foreach($years as $year)
+              <option @if (date('Y') == $year) selected @endif>{{$year}}</option>
+              @endforeach
             </select>
           </div> 
         </div>
         <div class="row">
           <div class="col-md-6" id="barChart">
-            <canvas id="myChart" data-users="$usersYear" data-orders="$ordersYear" data-posts="$postsYear" width="100%"></canvas>
+            <canvas id="myChart" data-users="[222,33,4324,34]" data-orders="[123,23,123, 2]" data-posts="[228,14,88,11]" width="100%"></canvas>
           </div>
           <div class="col-md-6" id="lineChart">
             <canvas id="line" data-total="$monthlyTotal" width="100%"></canvas>
@@ -209,19 +209,21 @@ var ctx = document.getElementById('pie').getContext('2d');
 var pie = new Chart(ctx, {
     type: 'pie',
     data: {
-        labels: ['Видео', 'Продажи', 'Просмотры видео'],
+        labels: ['Новые', "В процессе", 'Решенные', 'Нерешенные'],
         datasets: [{
             label: '# Месяц',
-            data: [$posts->count(), $sellings, $postViews],
+            data: [{{$newRequests}}, {{$processRequests}}, {{$solvedRequests}}, {{$unsolvedRequests}}],
             backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)'
+                '#33a2b8',
+                '#fec135',
+                '#4fa845',
+                '#dd4145',
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)'
+                '#33a2b8',
+                '#fec135',
+                '#4fa845',
+                '#dd4145',
             ],
             borderWidth: 1,
             height: 400,
@@ -240,7 +242,7 @@ var pie = new Chart(ctx, {
 
 document.addEventListener("DOMContentLoaded", drawChart)
 </script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $(function() {
   $("#years").on('change', function () {
     // console.log("changed");
@@ -284,5 +286,5 @@ document.addEventListener("DOMContentLoaded", drawChart)
       });            
 });
 })
-</script>
+</script> -->
 @endsection

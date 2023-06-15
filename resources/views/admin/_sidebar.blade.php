@@ -19,6 +19,7 @@
               </p>
             </a>
           </li>
+          @if(Auth::user()->is_admin)
           <li class="nav-item">
             <a href="{{route('categories.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'categories.')) active @endif">
               <i class="nav-icon fa fa-list"></i>
@@ -51,7 +52,7 @@
               </p>
             </a>
           </li>
-          
+          @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

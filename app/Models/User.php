@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function getRegionIds(): array
     {
-        return $this->regions()->pluck('id')->toArray();
+        return $this->regions()->get()->pluck('id')->toArray();
     }
 
     public function socialRequestsAsAuthor()
@@ -98,7 +98,7 @@ class User extends Authenticatable
         $this->delete();
     }
 
-    public function generatePassword(string $password): void
+    public function generatePassword($password): void
     {
         if ($password != null){
             $this->password = bcrypt($password);
@@ -106,19 +106,17 @@ class User extends Authenticatable
         }
     }
 
-    public function setAdmin(bool $is_admin = False): void 
+    public function setAdmin(bool $is_admin = false): void 
     {
-        if(!$this->id == 1){
+        if($this->id != 1){
             $this->is_admin = $is_admin;
             $this->save();
         }
     }
 
-    public function setStaff(bool $is_staff = False): void 
+    public function setStaff(bool $is_staff = false): void 
     {
-        if(!$this->id == 1){
-            $this->is_staff = $is_staff;
-            $this->save();
-        }
+        $this->is_staff = $is_staff;
+        $this->save();
     }
 }

@@ -46,6 +46,18 @@ class CreateRequestsCategoriesTable extends Migration
                 'request_id' => 4,
             )
         );
+        DB::table('requests__categories')->insert(
+            array(
+                'category_id' => 2,
+                'request_id' => 2,
+            )
+        );
+        DB::table('requests__categories')->insert(
+            array(
+                'category_id' => 2,
+                'request_id' => 5,
+            )
+        );
     }
 
     /**

@@ -34,7 +34,8 @@ class AdminController extends Controller
                 'solvedRequests' => SocialRequest::where('region_id', $region->id)->where('status_id', 3)->get()->count(),
                 'unsolvedRequests' => SocialRequest::where('region_id', $region->id)->where('status_id', 4)->get()->count(),
                 'region' => $region,
-                'regions' => $regions
+                'regions' => $regions,
+                'years' => range(2000, 2050)
             ];
         }else{
             $data = [
@@ -43,7 +44,8 @@ class AdminController extends Controller
                 'solvedRequests' => 0,
                 'unsolvedRequests' => 0,
                 'region' => $region,
-                'regions' => $regions
+                'regions' => $regions,
+                'years' => range(2000, 2050)
             ];
         }
         

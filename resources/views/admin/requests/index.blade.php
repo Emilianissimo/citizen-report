@@ -25,8 +25,33 @@
           <div class="card">
             <div class="card-header">
               <div class="form-group" style="text-align: right">
-                filter goes here
-                region, urgency, status
+                <form action="{{route('social_requests.index')}}" method="GET">
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <button class="btn btn-success w-100">Поиск</button>
+                    </div>
+                    <div class="col-md-3">
+                      {{Form::select('regions[]',
+                        $regions, $filterRegions, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите регион']
+                      )}}
+                    </div>
+                    <div class="col-md-3">
+                      {{Form::select('categories[]',
+                        $categories, $filterCategories, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите категории']
+                      )}}
+                    </div>
+                    <div class="col-md-3">
+                      {{Form::select('statuses[]',
+                        $statuses, $filterStatuses, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите статусы']
+                      )}}
+                    </div>
+                    <div class="col-md-3">
+                      {{Form::select('urgency[]',
+                        $urgency, $filterUrgency, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите срочность']
+                      )}}
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
             <div class="card-body" style="overflow-x: scroll;">
@@ -34,6 +59,7 @@
                 <thead>
                   <tr>
                     <th>ID</th>
+                    <th>Регион</th>
                     <th>Заголовок</th>
                     <th>Адрес</th>
                     <th>Срочность</th>
@@ -45,6 +71,7 @@
                 <tfoot>
                   <tr>
                     <th>ID</th>
+                    <th>Регион</th>
                     <th>Заголовок</th>
                     <th>Адрес</th>
                     <th>Срочность</th>
@@ -59,6 +86,7 @@
                   @foreach($requests as $r)
                   <tr>
                     <td>{{$r->id}}</td>
+                    <td>{{$r->region->title_ru}}</td>
                     <td>{{$r->title}}</td>
                     <td>{{$r->address}}</td>
                     <td>{!!$r->getUrgency()!!}</td>

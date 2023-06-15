@@ -56,6 +56,12 @@
                       Права служащего
                     </label>
                   </div>
+                  <div class="form-group">
+                      <label>Подопечные регионы</label>
+                      {{Form::select('regions[]',
+                        $regions, null, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите регион']
+                      )}}
+                  </div>
               </div>
               <div class="col-md-12">
                   <div class="box-footer">

@@ -34,6 +34,14 @@ class CreateUsersTable extends Migration
                 'is_admin' => true
             )
         );
+        DB::table('users')->insert(
+            array(
+                'name' => 'staff',
+                'phone' => 'staff',
+                'password' => bcrypt('staff'),
+                'is_staff' => true
+            )
+        );
     }
 
     /**

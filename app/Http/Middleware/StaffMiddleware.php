@@ -18,7 +18,7 @@ class StaffMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if((Auth::check() && Auth::user()->is_admin) || (Auth::check() && Auth::user()->is_staff)){
+        if(Auth::check() && (Auth::user()->is_admin || Auth::user()->is_staff)){
             return $next($request);
         }
         elseif (Auth::check()) {

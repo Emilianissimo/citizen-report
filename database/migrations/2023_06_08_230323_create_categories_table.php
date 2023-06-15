@@ -30,6 +30,15 @@ class CreateCategoriesTable extends Migration
                 'slug_uz' => 'korupsiya',
             )
         );
+
+        DB::table('categories')->insert(
+            array(
+                'title_ru' => 'Градоустройство',
+                'title_uz' => 'Shahar ishlari',
+                'slug_ru' => 'gradoustroystvo',
+                'slug_uz' => 'shahar-ishlari',
+            )
+        );
     }
 
     /**

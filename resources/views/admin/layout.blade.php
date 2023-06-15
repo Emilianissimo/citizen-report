@@ -15,6 +15,10 @@
     .select2-container--default .select2-selection--single .select2-selection__rendered{
         margin-top: -8px;
       }
+      .select2-container--default .select2-selection--multiple .select2-selection__choice{
+        background-color: #007bff !important;
+        border-color: #006fe6 !important;
+      }
   </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -40,17 +44,17 @@
     <a href="{{url('/dashboard')}}" class="brand-link">
       <img src="/img/logo.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="object-fit: cover; width: 50px; height: 50px">
-      <span class="brand-text font-weight-light">Dashboard</span>
+      <span class="brand-text font-weight-light">Citizen Report</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
+        <!-- <div class="image"> -->
+          <!-- <img src="" class="img-circle elevation-2" alt="User Image"> -->
+        <!-- </div> -->
+        <div class="info text-white">
           {{Auth::user()->name}}
         </div>
       </div>

@@ -83,7 +83,21 @@ class CreateSocialRequestsTable extends Migration
                 'coordinates' => '33.2971631,69.2815243',
                 'address' => 'fake',
                 'urgency' => 3,
-                'status_id' => 1,
+                'status_id' => 4,
+                'author_id' => 1,
+                'region_id' => 3
+            )
+        );
+
+        DB::table('social_requests')->insert(
+            array(
+                'title' => 'Все плохо',
+                'slug' => 'money_4',
+                'text' => 'много че можно написать',
+                'coordinates' => '33.2971631,69.2815243',
+                'address' => 'fake',
+                'urgency' => 3,
+                'status_id' => 2,
                 'author_id' => 1,
                 'region_id' => 3
             )
