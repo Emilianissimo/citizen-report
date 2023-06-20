@@ -15,9 +15,10 @@ class SocialRequestsController extends Controller
 {
     public function index(Request $request)
     {
-        $inititalRegionSet = Auth::user()->getRegionIds();
         if(Auth::user()->is_admin){
             $inititalRegionSet = Region::pluck('id')->all();
+        }else{
+            $inititalRegionSet = Auth::user()->organization->getRegionIds();
         }
 
         $requests = SocialRequest::whereIn('region_id', $inititalRegionSet);
@@ -30,7 +31,7 @@ class SocialRequestsController extends Controller
         if ($filterRegions) {
             # Check if chosen ids are available for current user
             if(!Auth::user()->is_admin){
-                $filterRegions = array_intersect(Auth::user()->getRegionIds(), $filterRegions);
+                $filterRegions = array_intersect(Auth::user()->organization->getRegionIds(), $filterRegions);
             }
             $requests = $requests->whereIn('region_id', $filterRegions);
         }
@@ -57,7 +58,7 @@ class SocialRequestsController extends Controller
         if(Auth::user()->is_admin){
             $regions = Region::pluck('title_ru', 'id')->all();
         }else{
-            $regions = Region::whereIn('id', Auth::user()->getRegionIds())->pluck('title_ru', 'id')->all();
+            $regions = Region::whereIn('id', Auth::user()->organization->getRegionIds())->pluck('title_ru', 'id')->all();
         }
         $urgency = [
             0 => 'Низкий',
@@ -83,7 +84,7 @@ class SocialRequestsController extends Controller
         if(Auth::user()->is_admin){
             $socialRequest = SocialRequest::findOrFail($id); 
         }else{
-            $socialRequest = SocialRequest::whereIn('region_id', Auth::user()->getRegionIds())->findOrFail($id);
+            $socialRequest = SocialRequest::whereIn('region_id', Auth::user()->organization->getRegionIds())->findOrFail($id);
         }
         $statuses = RequestStatus::pluck('title_ru', 'id')->all();
         $comments = $socialRequest->comments()->orderBy('created_at', 'DESC')->paginate(20);
