@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->boolean('is_admin')->default(false);
             $table->boolean('is_staff')->default(false);
+            $table->unsignedBigInteger('organization_id')->nullable();
+            $table->boolean('is_org_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -34,14 +36,7 @@ class CreateUsersTable extends Migration
                 'is_admin' => true
             )
         );
-        DB::table('users')->insert(
-            array(
-                'name' => 'staff',
-                'phone' => 'staff',
-                'password' => bcrypt('staff'),
-                'is_staff' => true
-            )
-        );
+        
     }
 
     /**

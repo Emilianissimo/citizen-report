@@ -29,6 +29,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{route('organizations.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'organizations.')) active @endif">
+              <i class="nav-icon fa fa-globe"></i>
+              <p>
+                Организации
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{route('regions.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'regions.')) active @endif">
               <i class="nav-icon fa fa-globe"></i>
               <p>

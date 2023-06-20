@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Region;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
@@ -17,7 +18,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        if(Auth::user()->is_admin){
+            $users = User::paginate(20);
+        }else{
+            $users = User::where('organization_id', Auth::user()->organization_id)->paginate(20);
+        }
         return view('admin.users.index', compact('users'));
     }
 
@@ -28,8 +33,14 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $regions = Region::pluck('title_ru', 'id')->all();
-        return view('admin.users.create', compact('regions'));
+        if (Auth::user()->is_admin){
+            $organizations = Organization::pluck('title', 'id')->all();
+        }else{
+            $organizations = [
+                [Auth::user()->organization_id => Auth::user()->organization->title]
+            ];
+        }
+        return view('admin.users.create', compact('organizations'));
     }
 
     /**
@@ -49,7 +60,8 @@ class UsersController extends Controller
         $user = User::add($request->all());
         $user->setAdmin($request->filled('is_admin'));
         $user->setStaff($request->filled('is_staff'));
-        $user->setRegions($request->get('regions'));
+        $user->setOrgAdmin($request->filled('is_org_admin'));
+        $user->setOrganization($request->get('organization_id'));
         $user->generatePassword($request->get('password'));
 
         return redirect()->route('users.edit', $user->id);
@@ -64,8 +76,24 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $regions = Region::pluck('title_ru', 'id')->all();
-        return view('admin.users.edit', compact('user', 'regions'));
+        if (Auth::user()->is_admin){
+            $organizations = Organization::pluck('title', 'id')->all();
+        }else{
+            if ($id == Auth::user()->id){
+                return redirect()->back();
+            }
+            if (!Auth::user()->is_admin && $user->is_admin){
+                return redirect()->back();
+            }
+            if($user->organization_id != Auth::user()->organization_id){
+                return redirect()->back();
+            }
+            $organizations = [
+                [Auth::user()->organization_id => Auth::user()->organization->title]
+            ];
+        }
+        
+        return view('admin.users.edit', compact('user', 'organizations'));
     }
 
     /**
@@ -78,6 +106,17 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+        if (!Auth::user()->is_admin){
+            if ($id == Auth::user()->id){
+                return redirect()->back();
+            }
+            if (!Auth::user()->is_admin && $user->is_admin){
+                return redirect()->back();
+            }
+            if($user->organization_id != Auth::user()->organization_id){
+                return redirect()->back();
+            }
+        }
 
         $this->validate($request, [
             'name'      => 'required',
@@ -90,7 +129,8 @@ class UsersController extends Controller
         $user->edit($request->all());
         $user->setAdmin($request->filled('is_admin'));
         $user->setStaff($request->filled('is_staff'));
-        $user->setRegions($request->get('regions'));
+        $user->setOrgAdmin($request->filled('is_org_admin'));
+        $user->setOrganization($request->get('organization_id'));
         $user->generatePassword($request->get('password'));
 
         return redirect()->back();
@@ -104,7 +144,19 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->remove();
+        $user = User::find($id);
+        if (!Auth::user()->is_admin){
+            if ($id == Auth::user()->id){
+                return;
+            }
+            if (!Auth::user()->is_admin && $user->is_admin){
+                return;
+            }
+            if($user->organization_id != Auth::user()->organization_id){
+                return;
+            }
+        }
+        $user->remove();
 
         return;
     }

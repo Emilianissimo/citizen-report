@@ -24,19 +24,19 @@ class CreateCategoriesTable extends Migration
 
         DB::table('categories')->insert(
             array(
-                'title_ru' => 'Коррупция',
-                'title_uz' => 'Korupsiya',
-                'slug_ru' => 'korruptsiya',
-                'slug_uz' => 'korupsiya',
+                'title_ru' => 'Жестокое обращение',
+                'title_uz' => 'Shafqatsiz Muomala',
+                'slug_ru' => 'jestokoe-obrashenie',
+                'slug_uz' => 'shafqatsiz-muomala',
             )
         );
 
         DB::table('categories')->insert(
             array(
-                'title_ru' => 'Градоустройство',
-                'title_uz' => 'Shahar ishlari',
-                'slug_ru' => 'gradoustroystvo',
-                'slug_uz' => 'shahar-ishlari',
+                'title_ru' => 'Бродячие животные',
+                'title_uz' => 'Adashgan hayvonlar',
+                'slug_ru' => 'brodyachie-jivotnie',
+                'slug_uz' => 'adashgan-hayvonlar',
             )
         );
     }

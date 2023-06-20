@@ -46,6 +46,7 @@
                     <label for="password">Пароль</label>
                     <input type="password" class="form-control" id="password" placeholder="" name="password">
                   </div>
+                  @if(Auth::user()->is_admin)
                   <div class="form-group">
                     <label>
                       <input type="checkbox" @if($user->id == 1) disabled @endif name="is_admin" @if($user->is_admin) checked @endif>
@@ -57,10 +58,11 @@
                       Права служащего
                     </label>
                   </div>
+                  @endif
                   <div class="form-group">
-                      <label>Подопечные регионы</label>
-                      {{Form::select('regions[]',
-                        $regions, $user->getRegionIds(), ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите регион']
+                      <label>Организация</label>
+                      {{Form::select('organizations[]',
+                        $organiztions, $user->getOrganizationIds(), ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите ориганизации']
                       )}}
                   </div>
               </div>

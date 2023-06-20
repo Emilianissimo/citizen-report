@@ -6,7 +6,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SocialRequest;
-use App\Models\User;
+use App\Models\Organization;
 
 class Region extends Model
 {
@@ -74,13 +74,13 @@ class Region extends Model
         $this->save();
     }
 
-    public function users()
+    public function organizations()
     {
         return $this->belongsToMany(
-            User::class,
-            'users__regions',
+            Organization::class,
+            'regions__organizations',
             'region_id',
-            'user_id'
+            'organization_id'
         );
     }
 

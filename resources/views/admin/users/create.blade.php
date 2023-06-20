@@ -45,6 +45,7 @@
                     <label for="password">Пароль</label>
                     <input type="password" class="form-control" id="password" placeholder="" value="{{old('password')}}" name="password">
                   </div>
+                  @if(Auth::user()->is_admin)
                   <div class="form-group">
                     <label>
                       <input type="checkbox" name="is_admin">
@@ -56,10 +57,11 @@
                       Права служащего
                     </label>
                   </div>
+                  @endif
                   <div class="form-group">
                       <label>Подопечные регионы</label>
-                      {{Form::select('regions[]',
-                        $regions, null, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите регион']
+                      {{Form::select('organizations[]',
+                        $organizations, null, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите организации']
                       )}}
                   </div>
               </div>

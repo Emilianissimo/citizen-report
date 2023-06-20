@@ -85,9 +85,9 @@ class SocialRequestsController extends Controller
         }else{
             $socialRequest = SocialRequest::whereIn('region_id', Auth::user()->getRegionIds())->findOrFail($id);
         }
-        $statuses = RequestStatus::all();
+        $statuses = RequestStatus::pluck('title_ru', 'id')->all();
         $comments = $socialRequest->comments()->orderBy('created_at', 'DESC')->paginate(20);
-        $gallery = $socialRequest->gallery()->all();
+        $gallery = $socialRequest->gallery()->get();
 
         return view('admin.requests.show', compact(
             'socialRequest',
@@ -95,5 +95,11 @@ class SocialRequestsController extends Controller
             'comments',
             'gallery',
         ));
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        SocialRequest::findOrFail($id)->setStatus($request->get('status_id'));
+        return redirect()->back();
     }
 }

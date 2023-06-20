@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Region;
+use App\Models\Organization;
 use App\Models\SocialRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -43,28 +43,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function regions()
+    public function organization()
     {
-        return $this->belongsToMany(
-            Region::class,
-            'users__regions',
-            'user_id',
-            'region_id'
-        );
+        return $this->belongsTo(Organization::class, 'organization_id');
     }
 
-    public function setRegions($ids)
+    public function setOrganization($id)
     {
-        if (is_null($ids)){
+        if (is_null($id)){
             return;
         }
 
-        $this->regions()->sync($ids);
-    }
-
-    public function getRegionIds(): array
-    {
-        return $this->regions()->get()->pluck('id')->toArray();
+        $this->organization_id = $id;
+        $this->save();
     }
 
     public function socialRequestsAsAuthor()
@@ -117,6 +108,12 @@ class User extends Authenticatable
     public function setStaff(bool $is_staff = false): void 
     {
         $this->is_staff = $is_staff;
+        $this->save();
+    }
+
+    public function setOrgAdmin(bool $is_org_admin = false): void 
+    {
+        $this->is_org_admin = $is_org_admin;
         $this->save();
     }
 }
