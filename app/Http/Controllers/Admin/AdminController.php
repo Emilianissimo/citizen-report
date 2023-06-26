@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
 use App\Models\Region;
-use App\Models\SocialRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,6 +50,23 @@ class AdminController extends Controller
         // }
         
         // return view('admin.dashboard', $data);
-        return view('admin.dashboard');
+        $regions = Region::pluck('title_ru', 'id')->all();
+        return view('admin.dashboard', compact('regions'));
+    }
+
+    public function updateOrganization(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'file' => 'mimes:jpeg,jpg,png',
+        ]);
+        try{
+            $organization = Auth::user()->organization;
+            $organization->edit($request->all());
+            $organization->setRegions($request->get('regions'));
+            $organization->uploadFile($request->file('picture'));
+        }finally{
+            return redirect()->back();            
+        }
     }
 }

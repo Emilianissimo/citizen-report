@@ -34,6 +34,12 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{{url('/')}}" class="nav-link">На сайт</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <form action="{{route('logout')}}" method="POST">
+          @csrf
+          <button class="nav-link" style="background-color: transparent; border: 0">Выход</button>
+        </form>
+      </li>
     </ul>
   </nav>
   <!-- /.navbar -->

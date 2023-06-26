@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Region;
+use Illuminate\Support\Facades\Storage;
 
 class Organization extends Model
 {
@@ -18,6 +19,10 @@ class Organization extends Model
      */
     protected $fillable = [
         'title',
+        'main_card_number',
+        'info',
+        'phone',
+        'address',
     ];
 
     /**
@@ -99,7 +104,7 @@ class Organization extends Model
 
     public function getFile()
     {
-        if ($this->file == null) {
+        if ($this->picture == null) {
 			return '/img/no-image.png';
 		}
 		return '/uploads/organizations/' . $this->id . '/' . $this->picture;

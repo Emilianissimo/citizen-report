@@ -50,6 +50,12 @@
                         $urgency, $filterUrgency, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите срочность']
                       )}}
                     </div>
+                    <div class="col-md-12">
+                      <label>
+                        <input type="checkbox" @if($filterMine) checked @endif name="mine">
+                        Только мои
+                      </label>
+                    </div>
                   </div>
                 </form>
               </div>

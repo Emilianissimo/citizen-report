@@ -40,11 +40,12 @@ class OrganizationsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title_ru' => 'required',
-            'title_uz' => 'required',
+            'title' => 'required',
+            'file' => 'mimes:jpeg,jpg,png',
         ]);
         $organization = Organization::add($request->all());
         $organization->setRegions($request->get('regions'));
+        $organization->uploadFile($request->file('picture'));
 
         return redirect()->route('organizations.edit', $organization->id);
 
@@ -73,12 +74,13 @@ class OrganizationsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'title_ru' => 'required',
-            'title_uz' => 'required',
+            'title' => 'required',
+            'file' => 'mimes:jpeg,jpg,png',
         ]);
         $organization = Organization::find($id);
         $organization->edit($request->all());
         $organization->setRegions($request->get('regions'));
+        $organization->uploadFile($request->file('picture'));
 
         return redirect()->back();
     }

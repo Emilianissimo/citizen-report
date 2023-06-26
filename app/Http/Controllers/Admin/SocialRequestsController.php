@@ -10,6 +10,7 @@ use App\Models\RequestStatus;
 use Illuminate\Http\Request;
 use App\Models\SocialRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class SocialRequestsController extends Controller
 {
@@ -27,6 +28,7 @@ class SocialRequestsController extends Controller
         $filterCategories = $request->get('categories');
         $filterStatuses = $request->get('statuses');
         $filterUrgency = $request->get('urgency');
+        $filterMine = $request->filled('mine');
 
         if ($filterRegions) {
             # Check if chosen ids are available for current user
@@ -48,6 +50,10 @@ class SocialRequestsController extends Controller
 
         if ($filterUrgency) {
             $requests = $requests->whereIn('urgency', $filterUrgency);
+        }
+
+        if ($filterMine) {
+            $requests = $requests->where('manager_id', Auth::user()->id);
         }
 
         $requests = $requests->orderBy('created_at', "DESC")->paginate(20);
@@ -75,6 +81,7 @@ class SocialRequestsController extends Controller
             'filterCategories',
             'filterStatuses',
             'filterUrgency',
+            'filterMine',
             'urgency',
         ));
     }
@@ -83,7 +90,9 @@ class SocialRequestsController extends Controller
     {
         if(Auth::user()->is_admin){
             $socialRequest = SocialRequest::findOrFail($id); 
+            $managers = User::where('id', '!=', 1)->get();
         }else{
+            $managers = User::where('organization_id', Auth::user()->organization_id)->get();
             $socialRequest = SocialRequest::whereIn('region_id', Auth::user()->organization->getRegionIds())->findOrFail($id);
         }
         $statuses = RequestStatus::pluck('title_ru', 'id')->all();
@@ -95,12 +104,25 @@ class SocialRequestsController extends Controller
             'statuses',
             'comments',
             'gallery',
+            'managers',
         ));
     }
 
     public function changeStatus(Request $request, $id)
     {
-        SocialRequest::findOrFail($id)->setStatus($request->get('status_id'));
+        $socialRequest = SocialRequest::findOrFail($id);
+        if(Auth::user()->id == $socialRequest->manager_id)
+        {
+            $socialRequest->setStatus($request->get('status_id'));
+        }
+        return redirect()->back();
+    }
+
+    public function updateManager(Request $request, $id)
+    {
+        $socialRequest = SocialRequest::findOrFail($id);
+        $socialRequest->manager_id = $request->get('manager_id', Auth::user()->id);
+        $socialRequest->save();
         return redirect()->back();
     }
 }
