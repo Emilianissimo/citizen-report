@@ -42,7 +42,7 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('/requests/create/{vue_capture?}', function () {
 		return view('welcome');
-	})->where('vue_capture', '[\/\w\.-]*');
+	})->where('vue_capture', '[\/\w\.-]*')->name('client.requests.create');
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware'=>'guest'], function() {

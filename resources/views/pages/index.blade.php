@@ -103,7 +103,7 @@ Shelters
                         <h3><span>{{__('Животное')}} </span> <br>
                             {{__('в опасности?')}}</h3>
                         <p>{{__('С животным плохо обращаются хозяева? Оно бродит по улицам и может быть опасно? Стая собак? Сообщите шелтерам в вашем регионе!')}}</p>
-                        <a href="#" class="boxed-btn3">{{__('Сообщить!')}}</a>
+                        <a href="{{route('client.requests.create', app()->getLocale())}}" class="boxed-btn3">{{__('Сообщить!')}}</a>
                     </div>
                 </div>
             </div>
@@ -122,7 +122,7 @@ Shelters
                         <h3><span>{{__('Каждое животное')}}</span>
                             {{__('Имеет право жить')}}</h3>
                         <p>{{__('Не дадим службам и другим травить и убивать животных!')}}</p>
-                        <a href="#report-place" class="boxed-btn3">{{__('Сообщить!')}}</a>
+                        <a href="{{route('client.requests.create', app()->getLocale())}}" class="boxed-btn3">{{__('Сообщить!')}}</a>
                     </div>
                 </div>
             </div>
