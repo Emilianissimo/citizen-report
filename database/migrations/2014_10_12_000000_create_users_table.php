@@ -31,7 +31,7 @@ class CreateUsersTable extends Migration
         DB::table('users')->insert(
             array(
                 'name' => 'admin',
-                'phone' => 'admin',
+                'phone' => '998000000000',
                 'password' => bcrypt('admin'),
                 'is_admin' => true
             )

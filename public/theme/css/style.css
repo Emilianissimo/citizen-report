@@ -4730,6 +4730,16 @@ h6 {
   border: 1px solid #f1f1f1;
 }
 
+.no-btn{
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.modal-backdrop{
+  z-index: 0;
+}
+
 /* line 986, ../../Arafath/CL/january 2020/240. Animal/HTML/scss/_elements.scss */
 .disabled-radio input:disabled {
   cursor: not-allowed;

@@ -20,11 +20,52 @@ class AuthController extends Controller
 			'phone' => 'required|unique:users',
 			'password' =>'required|confirmed|min:8',
 		]);
-		$user = User::add($request->all());
-		$user->generatePassword($request->get('password'));
-		Auth::login($user, true);
+		$phone = str_replace(
+			['(',')','-',' '],
+			'',
+			$request->get('phone')
+		);
+		try{
+			$user = User::add([
+				'name' => $request->get('name'),
+				'phone' => $phone
+			]);
+	
+			$user->generatePassword($request->get('password'));
+			Auth::login($user, true);
+		}catch (\Exception $e){
+			return redirect()->back()->with('status', '');
+		}
 
-		return redirect(route('dasboard.login'));
+		return redirect()->route('client.index', app()->getLocale());
+	}
+
+	public function clientLoginPage()
+	{
+		return view('auth.clientLogin');
+	}
+
+	public function clientLogin(Request $request)
+	{
+		$this->validate($request, [
+			'phone' => 'required',
+			'password' => 'required'
+		]);
+
+		$phone = str_replace(
+			['(',')','-',' '],
+			'',
+			$request->get('phone')
+		);
+
+		$user = User::where('phone', $phone)->first();
+
+		if ($user && password_verify($request->get('password'), $user->password))
+		{
+			Auth::login($user, $request->filled('remember'));
+			return redirect()->route('client.index', app()->getLocale());
+		}
+		return redirect()->back()->with('status', 'Неправильный телефон или пароль');
 	}
 
 	public function loginPage()
@@ -46,12 +87,12 @@ class AuthController extends Controller
 			Auth::login($user, $request->filled('remember'));
 			return redirect(route('dashboard'));
 		}
-		return redirect()->back()->with('status', 'Неправильный Email или пароль');
+		return redirect()->back()->with('status', 'Неправильный телефон или пароль');
 	}
 
 	public function logout()
 	{
 		Auth::logout();
-		return redirect(route('dashboard.loginPage'));
+		return redirect(route('client.loginPage', app()->getLocale()));
 	}
 }

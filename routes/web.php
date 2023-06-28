@@ -27,22 +27,30 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('/', [MainController::class, 'index'])->name('client.index');
 	Route::get('/profile', [MainController::class, 'profile'])->name('client.profile');
 	Route::put('/profile', [MainController::class, 'profileUpdate'])->name('client.profile.update');
-	Route::get('/requests', [MainController::class, 'requests'])->name('client.requests');
+	Route::get('/requests', [MainController::class, 'requests'])->name('client.requests.index');
 	Route::get('/requests/{slug}', [MainController::class, 'singleRequest'])->name('client.requests.show');
 	Route::post('/requests/{slug}/comment', [MainController::class, 'storeCommentRequest'])->name('client.requests.comment');
 	Route::delete('/requests/{slug}/comment/{id}', [MainController::class, 'destroyCommentRequest'])->name('client.requests.comment.destroy');
 	
-	Route::get('/organizations/{id}/posts', [OrganzationsController::class, 'posts'])->name('client.posts');
-	Route::get('/organizations/{id}/posts/{slug}', [OrganzationsController::class, 'show'])->name('client.posts.show');
-	Route::post('/organizations/{id}/posts/{slug}/comment', [OrganzationsController::class, 'comment'])->name('client.posts.comment');
-	Route::delete('/organizations/{id}/posts/{slug}/comment/{comment_id}/delete', [OrganzationsController::class, 'commentDelete'])->name('client.posts.comment.destroy');
+	Route::get('/organizations', [OrganizationsController::class, 'index'])->name('client.organizations.index');
+	Route::get('/organizations/{id}/posts', [OrganizationsController::class, 'posts'])->name('client.posts');
+	Route::get('/organizations/{id}/posts/{slug}', [OrganizationsController::class, 'show'])->name('client.posts.show');
+	Route::post('/organizations/{id}/posts/{slug}/comment', [OrganizationsController::class, 'comment'])->name('client.posts.comment');
+	Route::delete('/organizations/{id}/posts/{slug}/comment/{comment_id}/delete', [OrganizationsController::class, 'commentDelete'])->name('client.posts.comment.destroy');
 	
-	Route::get('/organizations/{id}/incomes', [OrganzationsController::class, 'incomes'])->name('client.incomes');
-	Route::get('/organizations/{id}/consumptions', [OrganzationsController::class, 'consumptions'])->name('client.consumptions');
+	Route::get('/organizations/{id}/incomes', [OrganizationsController::class, 'incomes'])->name('client.incomes');
+	Route::get('/organizations/{id}/consumptions', [OrganizationsController::class, 'consumptions'])->name('client.consumptions');
 
 	Route::get('/requests/create/{vue_capture?}', function () {
 		return view('welcome');
 	})->where('vue_capture', '[\/\w\.-]*')->name('client.requests.create');
+
+	Route::group(['middleware' => 'guest'], function() {
+		Route::get('/login', [AuthController::class, 'clientLoginPage'])->name('client.loginPage');
+		Route::post('/login', [AuthController::class, 'clientLogin'])->name('client.login');
+		Route::get('/register', [AuthController::class, 'registerPage'])->name('client.registerPage');
+		Route::post('/register', [AuthController::class, 'register'])->name('client.register');
+	});
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware'=>'guest'], function() {

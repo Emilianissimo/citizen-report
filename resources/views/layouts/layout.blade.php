@@ -25,6 +25,14 @@
     <link rel="stylesheet" href="/theme/css/slicknav.css">
     <link rel="stylesheet" href="/theme/css/style.css">
     <link rel="stylesheet" href="/theme/css/custom-style.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    @if(app()->getLocale() == 'uz')
+    <style>
+        .header-area .main-header-area .main-menu ul li{
+            margin-left: 30px;
+        }
+    </style>
+    @endif
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 </head>
 
@@ -59,23 +67,37 @@
             <div id="sticky-header" class="main-header-area">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-xl-3 col-lg-3">
+                        <div class="col-xl-2 col-lg-2">
                             <div class="logo">
-                                <a href="index.html">
+                                <a href="/">
                                     <img src="img/logo.png" alt="">
+                                    <h3>Shelters</h3>
                                 </a>
                             </div>
                         </div>
-                        <div class="col-xl-9 col-lg-9">
+                        <div class="col-xl-10 col-lg-10">
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a  href="index.html">{{__('Главная')}}</a></li>
-                                        <li><a href="blog.html">{{__('Заявки')}}</a></li>
-                                        <li><a href="shelters.html">{{__('Приюты')}}</a></li>
-                                        <li><a href="profile.html">{{__('Профиль')}}</a></li>
-                                        <li><a href="profile.html">{{__('Логин')}}</a></li>
-                                        <li><a href="profile.html">{{__('Регистрация')}}</a></li>
+                                        <li><a  href="/">{{__('Главная')}}</a></li>
+                                        <li><a href="{{route('client.requests.index', app()->getLocale())}}">{{__('Заявки')}}</a></li>
+                                        <li><a href="{{route('client.organizations.index', app()->getLocale())}}">{{__('Приюты')}}</a></li>
+                                        @guest
+                                        <li><a href="{{route('client.loginPage', app()->getLocale())}}">{{__('Логин')}}</a></li>
+                                        <li><a href="{{route('client.registerPage', app()->getLocale())}}">{{__('Регистрация')}}</a></li>
+                                        @else
+                                        <li><a href="{{route('client.profile', app()->getLocale())}}">{{__('Профиль')}}</a></li>
+                                        @if(Auth::user()->is_admin || Auth::user()->is_staff || Auth::user()->is_org_admin)
+                                        <li><a href="{{route('dashboard')}}">Admin</a></li>
+                                        @endif
+                                        <li><a href="{{route('client.profile', app()->getLocale())}}">{{__('Профиль')}}</a></li>
+                                        <li>
+                                            <form action="{{route('logout')}}" method="POST">
+                                                @csrf
+                                                <button class="no-btn">{{__('Выход')}}</button>
+                                            </form>
+                                        </li>
+                                        @endguest
                                         @yield('locales')
                                     </ul>
                                 </nav>
@@ -180,7 +202,8 @@
 
     <!-- JS here -->
     <script src="/theme/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="/theme/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
     <script src="/theme/js/popper.min.js"></script>
     <script src="/theme/js/bootstrap.min.js"></script>
     <script src="/theme/js/owl.carousel.min.js"></script>
@@ -206,7 +229,15 @@
     <script src="/theme/js/mail-script.js"></script>
 
     <script src="/theme/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        $('.select2').select2({
+        })
+        $(document).ready(function() {
+            $(".masked-phone").inputmask({
+                mask: '\\9\\98 (99) 999-99-99'
+            });
+        })
         $('#datepicker').datepicker({
             iconsLibrary: 'fontawesome',
             disableDaysOfWeek: [0, 0],

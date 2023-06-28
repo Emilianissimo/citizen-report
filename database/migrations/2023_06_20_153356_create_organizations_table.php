@@ -29,13 +29,17 @@ class CreateOrganizationsTable extends Migration
         });
 
         DB::table('organizations')->insert(array(
-            'title' => 'test org'
+            'title' => 'test org',
+            'info' => 'something',
+            'main_card_number' => '8600000000001111',
+            'phone' => '88005553535',
+            'address' => 'chill street 75',
         ));
 
         DB::table('users')->insert(
             array(
                 'name' => 'staff org admin',
-                'phone' => 'staff_admin',
+                'phone' => '998111111111',
                 'password' => bcrypt('staff'),
                 'is_staff' => true,
                 'is_org_admin' => true,
@@ -46,7 +50,7 @@ class CreateOrganizationsTable extends Migration
         DB::table('users')->insert(
             array(
                 'name' => 'staff org',
-                'phone' => 'staff',
+                'phone' => '998222222222',
                 'password' => bcrypt('staff'),
                 'is_staff' => true,
                 'organization_id' => 1

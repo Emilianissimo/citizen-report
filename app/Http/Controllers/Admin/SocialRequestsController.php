@@ -39,9 +39,9 @@ class SocialRequestsController extends Controller
         }
 
         if ($filterCategories) {
-            $requests = $requests->with(['categories' => function($q) use ($filterCategories){
+            $requests = $requests->whereHas('categories' => function($q) use ($filterCategories){
                 $q->wherePivot('category_id', 'in', $filterCategories);
-            }]);
+            });
         }
 
         if ($filterStatuses) {
