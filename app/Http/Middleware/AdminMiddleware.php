@@ -17,10 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->is_admin){
-            return $next($request);
-        }
-        elseif (Auth::check() && Auth::user()) {
+        if(Auth::check()){
+            if(Auth::user()->is_admin){
+                return $next($request);
+            }
             abort(403);
         }
         return redirect(route('dashboard.login'));

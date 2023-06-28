@@ -60,8 +60,8 @@
                   @endif
                   <div class="form-group">
                       <label>Подопечные регионы</label>
-                      {{Form::select('organizations[]',
-                        $organizations, null, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите организации']
+                      {{Form::select('organization_id',
+                        $organizations, null, ['class' => 'form-control select2', 'data-placeholder'=>'Выберите ориганизации']
                       )}}
                   </div>
               </div>

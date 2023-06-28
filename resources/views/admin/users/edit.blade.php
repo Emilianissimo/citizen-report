@@ -61,8 +61,8 @@
                   @endif
                   <div class="form-group">
                       <label>Организация</label>
-                      {{Form::select('organizations[]',
-                        $organiztions, $user->getOrganizationIds(), ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите ориганизации']
+                      {{Form::select('organization_id',
+                        $organizations, $user->organization_id, ['class' => 'form-control select2', 'data-placeholder'=>'Выберите ориганизации']
                       )}}
                   </div>
               </div>

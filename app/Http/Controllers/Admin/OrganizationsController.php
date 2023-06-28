@@ -51,6 +51,27 @@ class OrganizationsController extends Controller
 
     }
 
+    public function show($id)
+    {
+        $organization = Organization::findOrFail($id);
+        $posts = $organization->posts()->paginate(20);
+        return view('admin.organizations.show', compact('organization', 'posts'));
+    }
+
+    public function consumptions($id)
+    {
+        $organization = Organization::findOrFail($id);
+        $consumptions = $organization->consumptions()->paginate(20);
+        return view('admin.organizations.consumptions', compact('organization', 'consumptions'));
+    }
+
+    public function incomes($id)
+    {
+        $organization = Organization::findOrFail($id);
+        $incomes = $organization->incomes()->paginate(20);
+        return view('admin.organizations.incomes', compact('organization', 'incomes'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

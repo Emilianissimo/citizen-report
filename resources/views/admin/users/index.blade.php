@@ -30,7 +30,7 @@
               <div class="form-group" style="text-align: right">
                 <a href="{{route('users.create')}}" class="btn btn-success">Добавить</a>
               </div>
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example3" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Никнейм</th>

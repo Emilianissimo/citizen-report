@@ -43,6 +43,22 @@
                         $regions, null, ['class' => 'form-control select2', 'multiple'=>true, 'data-placeholder'=>'Выберите регионы']
                       )}}
                   </div>
+                  <div class="form-group">
+                    <label for="main_card_number">Номер карты<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" id="main_card_number" placeholder="" value="{{old('main_card_number')}}" name="main_card_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Телефон<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" id="phone" placeholder="" value="{{old('phone')}}" name="phone">
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Адрес<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" id="address" placeholder="" value="{{old('address')}}" name="address">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Доп. инфо</label>
+                    <textarea name="info" id="" cols="30" rows="10">{{old('info')}}</textarea>
+                  </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
@@ -52,7 +68,7 @@
               </div>
               <div class="col-md-12">
                   <div class="box-footer">
-                      <a href="{{route('users.index')}}" class="btn btn-default">Назад</a>
+                      <a href="{{route('organizations.index')}}" class="btn btn-default">Назад</a>
                       <button class="btn btn-success float-right">Добавить</button>
                   </div>
               </div>

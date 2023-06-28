@@ -30,7 +30,7 @@
               <div class="form-group" style="text-align: right">
                 <a href="{{route('organizations.create')}}" class="btn btn-success">Добавить</a>
               </div>
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example3" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Название</th>
@@ -62,6 +62,7 @@
                       @endforeach
                     </td>
                     <td id="actions">
+                      <a style="font-size: 25px" href="{{route('organizations.show', $organization->id)}}" class="fa fa-eye"></a> 
                       <a style="font-size: 25px" href="{{route('organizations.edit', $organization->id)}}" class="fa fa-edit"></a> 
                       <button data-route="{{route('organizations.destroy', $organization->id)}}" type="button" class="delete">
                         <i style="font-size: 25px" class="fa fa-trash"></i>

@@ -27,11 +27,20 @@ class Gallery extends Model
         return $this->belongsTo(SocialRequest::class, 'request_id');
     }
     
-    public static function add(int $requestId)
+    public static function add(int | null $requestId=null, int | null $postId=null)
     {
+        if (is_null($requestId) && is_null($requestId)){
+            return;
+        }
+        
         $gallery = new self;
 
-        $gallery->request_id = $requestId;
+        if(!is_null($requestId)){
+            $gallery->request_id = $requestId;
+        }
+        if(!is_null($postId)){
+            $gallery->post_id = $postId;
+        }
         $gallery->save();
 
         return $$gallery;

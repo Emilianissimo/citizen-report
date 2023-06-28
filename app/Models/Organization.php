@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Region;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Post;
+use App\Models\Consumption;
+use App\Models\Income;
 
 class Organization extends Model
 {
@@ -39,6 +42,21 @@ class Organization extends Model
             'organization_id',
             'region_id'
         );
+    }
+
+    public function consumptions()
+    {
+        return $this->hasMany(Consumption::class, 'organization_id');
+    }
+
+    public function incomes()
+    {
+        return $this->hasMany(Income::class, 'organization_id');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'organization_id');
     }
 
     public function users()

@@ -17,6 +17,7 @@ class CreateGalleriesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('request_id')->nullable();
             $table->foreign('request_id')->references('id')->on('social_requests');
+            $table->unsignedBigInteger('post_id')->nullable();
             $table->string('file')->nullable();
             $table->string('mime');
             $table->timestamps();

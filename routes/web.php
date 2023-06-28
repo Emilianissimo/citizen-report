@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SocialRequestsController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\OrganizationsController;
+use App\Http\Controllers\Admin\OrganizationsController as AdminOrganizationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +31,15 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::get('/requests/{slug}', [MainController::class, 'singleRequest'])->name('client.requests.show');
 	Route::post('/requests/{slug}/comment', [MainController::class, 'storeCommentRequest'])->name('client.requests.comment');
 	Route::delete('/requests/{slug}/comment/{id}', [MainController::class, 'destroyCommentRequest'])->name('client.requests.comment.destroy');
+	
+	Route::get('/organizations/{id}/posts', [OrganzationsController::class, 'posts'])->name('client.posts');
+	Route::get('/organizations/{id}/posts/{slug}', [OrganzationsController::class, 'show'])->name('client.posts.show');
+	Route::post('/organizations/{id}/posts/{slug}/comment', [OrganzationsController::class, 'comment'])->name('client.posts.comment');
+	Route::delete('/organizations/{id}/posts/{slug}/comment/{comment_id}/delete', [OrganzationsController::class, 'commentDelete'])->name('client.posts.comment.destroy');
+	
+	Route::get('/organizations/{id}/incomes', [OrganzationsController::class, 'incomes'])->name('client.incomes');
+	Route::get('/organizations/{id}/consumptions', [OrganzationsController::class, 'consumptions'])->name('client.consumptions');
+
 	Route::get('/requests/create/{vue_capture?}', function () {
 		return view('welcome');
 	})->where('vue_capture', '[\/\w\.-]*');
@@ -58,6 +69,9 @@ Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 
 Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 'middleware' => 
 'admin'], function(){
 	Route::resource('/organizations', 'OrganizationsController');
+	Route::get('/organizations/{id}/incomes', [AdminOrganizationsController::class, 'incomes'])->name('organizations.incomes');
+	Route::get('/organizations/{id}/consumptions', [AdminOrganizationsController::class, 'consumptions'])->name('organizations.consumptions');
+	Route::resource('/posts', 'PostsController');
 });
 
 Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 'middleware' => 

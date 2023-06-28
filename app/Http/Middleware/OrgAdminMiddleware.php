@@ -17,13 +17,13 @@ class OrgAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::user()->is_admin && !Auth::user()->organization){
-            abort(403);
-        }
-        if(Auth::check() && (Auth::user()->is_admin || Auth::user()->is_org_admin)){
-            return $next($request);
-        }
-        elseif (Auth::check()) {
+        if(Auth::check()){
+            if(!Auth::user()->is_admin && !Auth::user()->organization){
+                abort(403);
+            }
+            if(Auth::user()->is_admin || Auth::user()->is_org_admin){
+                return $next($request);
+            }
             abort(403);
         }
         return redirect(route('dashboard.login'));
