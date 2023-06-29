@@ -18,7 +18,7 @@ class CreateSocialRequestsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('text');
-            $table->text('coordinates');
+            $table->text('coordinates')->default('Tashkent');
             $table->text('address');
             $table->integer('urgency')->default(0); # 0 - low, 1 - normal, 2 - high, 3 - urgent
             $table->text('report_from_manager')->nullable();
@@ -43,7 +43,8 @@ class CreateSocialRequestsTable extends Migration
                 'urgency' => 0,
                 'status_id' => 1,
                 'author_id' => 1,
-                'region_id' => 1
+                'region_id' => 1,
+                'created_at' => '2023-12-12T12:12:12'
             )
         );
 
@@ -57,7 +58,8 @@ class CreateSocialRequestsTable extends Migration
                 'urgency' => 1,
                 'status_id' => 1,
                 'author_id' => 1,
-                'region_id' => 1
+                'region_id' => 1,
+                'created_at' => '2023-12-12T12:12:12'
             )
         );
 
@@ -71,7 +73,8 @@ class CreateSocialRequestsTable extends Migration
                 'urgency' => 2,
                 'status_id' => 1,
                 'author_id' => 1,
-                'region_id' => 2
+                'region_id' => 2,
+                'created_at' => '2023-12-12T12:12:12'
             )
         );
 
@@ -85,7 +88,8 @@ class CreateSocialRequestsTable extends Migration
                 'urgency' => 3,
                 'status_id' => 4,
                 'author_id' => 1,
-                'region_id' => 3
+                'region_id' => 3,
+                'created_at' => '2023-12-12T12:12:12'
             )
         );
 
@@ -99,7 +103,8 @@ class CreateSocialRequestsTable extends Migration
                 'urgency' => 3,
                 'status_id' => 2,
                 'author_id' => 1,
-                'region_id' => 3
+                'region_id' => 3,
+                'created_at' => '2023-12-12T12:12:12'
             )
         );
     }

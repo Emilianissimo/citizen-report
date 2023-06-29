@@ -28,6 +28,7 @@ class CreateRequestCommentsTable extends Migration
                 'text' => 'много че можно написать',
                 'user_id' => 1,
                 'request_id' => 1,
+                'created_at' => "2022-03-14T12:05:14",
             )
         );
 
@@ -36,6 +37,7 @@ class CreateRequestCommentsTable extends Migration
                 'text' => 'много че можно написать 2',
                 'user_id' => 1,
                 'request_id' => 1,
+                'created_at' => "2022-03-14T12:05:14",
             )
         );
     }

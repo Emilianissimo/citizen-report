@@ -33,6 +33,16 @@
         }
     </style>
     @endif
+    <style>
+        .btn-outline-danger{
+            border: 1px solid #ff3500;
+            color: #ff3500;
+        }
+        .btn-outline-danger:hover{
+            background-color: #ff3500;
+            color: white;
+        }
+    </style>
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 </head>
 
@@ -67,15 +77,15 @@
             <div id="sticky-header" class="main-header-area">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-xl-2 col-lg-2">
+                        <div class="col-xl-3 col-lg-3">
                             <div class="logo">
                                 <a href="/">
                                     <img src="img/logo.png" alt="">
-                                    <h3>Shelters</h3>
+                                    <h3><a href="{{route('client.requests.create', app()->getLocale())}}">{{__('Создать заявку')}}</a></h3>
                                 </a>
                             </div>
                         </div>
-                        <div class="col-xl-10 col-lg-10">
+                        <div class="col-xl-9 col-lg-9">
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
@@ -86,7 +96,6 @@
                                         <li><a href="{{route('client.loginPage', app()->getLocale())}}">{{__('Логин')}}</a></li>
                                         <li><a href="{{route('client.registerPage', app()->getLocale())}}">{{__('Регистрация')}}</a></li>
                                         @else
-                                        <li><a href="{{route('client.profile', app()->getLocale())}}">{{__('Профиль')}}</a></li>
                                         @if(Auth::user()->is_admin || Auth::user()->is_staff || Auth::user()->is_org_admin)
                                         <li><a href="{{route('dashboard')}}">Admin</a></li>
                                         @endif

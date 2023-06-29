@@ -12,11 +12,11 @@ class OrganizationsController extends Controller
     {
         $region_id = $request->get('region_id');
         if(is_null($region_id)){
-            $organizations = Organization::paginate(12);
+            $organizations = Organization::orderBy('created_at', 'DESC')->paginate(12);
         }else{
             $organizations = Organization::whereHas('regions', function($q) use ($region_id){
                 $q->where('region_id', $region_id);
-            })->paginate(12);
+            })->orderBy('created_at', 'DESC')->paginate(12);
         }
         $regions = Region::all();
         return view('pages.organizations.index', compact('organizations', 'regions', 'region_id'));

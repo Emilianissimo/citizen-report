@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Organization;
 use App\Models\Region;
+use App\Models\RequestComment;
 use App\Models\RequestStatus;
 use App\Models\SocialRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
@@ -29,7 +31,7 @@ class MainController extends Controller
     public function requests(Request $request)
     {
         $regions = Region::all();
-        $requests = SocialRequest::orderBy('created_at', 'DESC');
+        $requests = new SocialRequest;
 
         $filterRegions = $request->get('regions', []);
         $filterCategories = $request->get('categories', []);
@@ -54,7 +56,7 @@ class MainController extends Controller
             $requests = $requests->whereIn('urgency', $filterUrgency);
         }
 
-        $requests = $requests->paginate(20);
+        $requests = $requests->orderBy('created_at', 'DESC')->paginate(20);
         
 
         $statuses = RequestStatus::all();
@@ -81,8 +83,69 @@ class MainController extends Controller
     public function singleRequest($lang, $slug)
     {
         $socialRequest = SocialRequest::where('slug', $slug)->first();
+        $comments = $socialRequest->comments()->orderBy('created_at', 'DESC')->paginate(50);
         return view('pages.requests.show', compact(
-            'socialRequest'
+            'socialRequest',
+            'comments'
         ));
-;    }
+    }
+
+    public function storeCommentRequest(Request $request, $lang, $slug)
+    {
+        $this->validate($request, [
+            'text' => 'required'
+        ]);
+        $socialRequest = SocialRequest::where('slug', $slug)->firstOrFail();
+        RequestComment::add($request->all(), $socialRequest->id);
+        return redirect()->back();
+    }
+
+    public function destroyCommentRequest($lang, $slug, $commentId)
+    {
+        if(Auth::user()->is_admin || Auth::user()->id == $commentId){
+            RequestComment::findOrFail($commentId)->remove();
+        }
+        return redirect()->back();
+    }
+
+    public function requestCreate()
+    {
+        $regions = Region::all();
+        $categories = Category::all();
+        $urgency = [
+            0 => __('Низкий'),
+            1 => __('Средний'),
+            2 => __('Важный'),
+            3 => __('Очень важный'),
+        ];
+        return view('pages.requests.create', compact(
+            'regions',
+            'categories',
+            'urgency'
+        ));
+    }
+
+    public function requestStore(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'text' => 'required',
+            'coordinates' => 'required',
+            'address' => 'required'
+        ]);
+
+        $socialRequest = SocialRequest::add($request->all());
+        $socialRequest->setRegion($request->get('region_id'));
+        $socialRequest->setCategories($request->get('categories'));
+
+        return redirect()->route('client.requests.show', [
+            'locale' => app()->getLocale(),
+            'slug' => $socialRequest->slug
+        ]);
+    }
+
+    public function addFileRequest()
+    {
+        return;
+    }
 }

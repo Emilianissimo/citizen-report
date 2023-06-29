@@ -121,8 +121,13 @@ class SocialRequestsController extends Controller
     public function updateManager(Request $request, $id)
     {
         $socialRequest = SocialRequest::findOrFail($id);
-        $socialRequest->manager_id = $request->get('manager_id', Auth::user()->id);
-        $socialRequest->save();
+        $socialRequest->setManager($request->get('manager_id', Auth::user()->id));
+        return redirect()->back();
+    }
+
+    public function destroyComment($id, $commentId)
+    {
+        RequestComment::findOrFail($commentId)->remove();
         return redirect()->back();
     }
 }

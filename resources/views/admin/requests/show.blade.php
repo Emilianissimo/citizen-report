@@ -66,7 +66,18 @@
                   {{$comments->links()}}
                   @foreach($comments as $comment)
                   <div class="my-3" style="border-radius: 20px; box-shadow: 1px 5px 5px gray; padding: 20px">
-                    <h4>{{$comment->user->name}} || {{$comment->user->phone}}</h4>
+                    <div class="row">
+                      <div class="col-6">
+                        <h4>{{$comment->user->name}} || {{$comment->user->phone}}</h4>
+                      </div>
+                      <div class="col-6 text-right">
+                        <form action="{{route('social_requests.comment.destroy', ['id' => $socialRequest->id, 'comment_id' => $comment->id])}}" method="POST">
+                          @csrf
+                          <input type="hidden" name="_method" value="DELETE">
+                          <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </form>
+                      </div>
+                    </div>
                     <hr>
                     <p>
                       {{$comment->text}}
@@ -127,6 +138,10 @@
                             <b>Адрес: </b> {{$socialRequest->address}}
                         </li>
                         <li>
+                        <li>
+                          <b>Дата: {{$socialRequest->created_at->format('Y/m/d h:i:s')}}</b> 
+                        </li>
+                        <li>
                             <b>Категории: </b> 
                             @foreach($socialRequest->categories as $category)
                                 {{$category->title_ru}} @if(!$loop->last), @endif
@@ -147,6 +162,20 @@
                       </div>
                       @endforelse
                     </div>
+                    <hr>
+                    <div style="overflow:hidden;max-width:100%;width:100%;height:300px;">
+                      <div id="embed-map-canvas" style="height:100%; width:100%;max-width:100%;">
+                        <iframe style="height:100%;width:100%;border:0;" frameborder="0" src="https://www.google.com/maps/embed/v1/place?q={{$socialRequest->coordinates}}&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe>
+                      </div>
+                      <style>
+                        #embed-map-canvas .text-marker{}
+                        .map-generator{
+                          max-width: 100%; 
+                          max-height: 100%;
+                          background: none;
+                        }
+                      </style>
+                     </div>
                 </div>
               </div>
             </div>

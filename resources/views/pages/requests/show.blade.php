@@ -38,14 +38,6 @@
                         {{__('Назад')}}
                     </a>
                 </div>
-                <div class="col-6 text-right">
-                    <button class="dropdown-button">
-                        <span class="ellipsis">&#8942;</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <button class="delete-button-blog">{{__('Удалить')}}</button>
-                    </div>
-                </div>
             </div>
 
             <div class="single-post">
@@ -59,9 +51,50 @@
                     <ul class="blog-info-link mt-3 mb-4 align-items-center row px-3">
                         <li><a href="#">{!!$socialRequest->getUrgency()!!}</a></li>
                         <li><i class="fa fa-comments"></i> {{$socialRequest->comments()->count()}}</li>
+                        <li>@foreach($socialRequest->categories as $category){{$category->getTitle(app()->getLocale())}} @if(!$loop->last), @endif @endforeach</li>
+                        <li><i style="color:rgb(145, 34, 34);" class="fa fa-map-marker" aria-hidden="true"></i> {{$socialRequest->region->getTitle(app()->getLocale())}}</li>
+                        <li><i style="color:rgb(145, 34, 34);" class="fa fa-hourglass-start" aria-hidden="true"></i> {{$socialRequest->status->getTitle(app()->getLocale())}}</li>
+                        <li>{{$socialRequest->created_at->format('Y/m/d h:i:s')}}</li>
                     </ul>
                     <hr>
                     {!!$socialRequest->text!!}
+                    <h4 class="mt-4">
+                        <b>Адрес: </b> {{$socialRequest->address}}
+                    </h4>
+                    <hr>
+                    <h2>
+                        {{__('Галерея')}}
+                    </h2>
+                    <hr>
+                    <div class="row">
+                        @forelse($socialRequest->gallery as $gallery)
+                        <div class="col-md-4">
+                            {!!$gallery->getHtmlBlock()!!}
+                        </div>
+                        @empty
+                        <div class="col-md-12">
+                            <b>{{__('Никакого медиа не было прикреплено')}}</b>
+                        </div>
+                        @endforelse
+                    </div>
+                    <hr>
+                    <h2>
+                        {{__('Место на карте')}}
+                    </h2>
+                    <hr>
+                    <div style="overflow:hidden;max-width:100%;width:100%;height:300px;">
+                      <div id="embed-map-canvas" style="height:100%; width:100%;max-width:100%;">
+                        <iframe style="height:100%;width:100%;border:0;" frameborder="0" src="https://www.google.com/maps/embed/v1/place?q={{$socialRequest->coordinates}}&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe>
+                      </div>
+                      <style>
+                        #embed-map-canvas .text-marker{}
+                        .map-generator{
+                          max-width: 100%; 
+                          max-height: 100%;
+                          background: none;
+                        }
+                      </style>
+                     </div>
                 </div>
             </div>
             <div class="row">
@@ -71,7 +104,6 @@
                         <div class="media align-items-center">
                             <div class="media-body">
                                 <h4>{{$socialRequest->author->name}}</h4>
-                        
                             </div>
                         </div>
                     </div>
@@ -83,6 +115,11 @@
                             <div class="media-body">
                                 @if($socialRequest->manager)
                                 <h4>{{$socialRequest->manager->name}}</h4>
+                                <h5>
+                                    <a href="{{route('client.posts', ['locale' => app()->getLocale(), 'id' => $socialRequest->manager->organization->id])}}">
+                                        {{$socialRequest->manager->organization->title}}
+                                    </a>
+                                </h5>
                                 @else
                                 <h4>{{__('Не назначен')}}</h4>
                                 @endif
@@ -92,117 +129,55 @@
                 </div>
             </div>
             <div class="comments-area">
-                <h4>05 Comments</h4>
+                <h4>{{__('Комментарии')}}: {{$socialRequest->comments()->count()}}</h4>
+                @foreach($comments as $comment)
                 <div class="comment-list">
                     <div class="single-comment justify-content-between d-flex">
                     <div class="user justify-content-between d-flex">
-                        <div class="thumb">
+                        <!-- <div class="thumb">
                             <img src="img/comment/comment_1.png" alt="">
-                        </div>
+                        </div> -->
+                        @if(Auth::user()->is_admin || Auth::user()->id == $comment->user_id)
+                        <form action="{{route('client.requests.comment.destroy', ['locale'=> app()->getLocale(),'slug' => $socialRequest->slug, 'id' => $comment->id])}}" method="POST" class="mr-3">
+                            @csrf
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button class="btn btn-outline-danger" style="height: 100%;"><i class="fa fa-trash"></i></button>
+                        </form>
+                        @endif
                         <div class="desc">
                             <p class="comment">
-                                Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
+                                {{$comment->text}}
                             </p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <h5>
-                                    <a href="#">Emilly Blunt</a>
+                                    <a href="#">{{$comment->user->name}}</a>
                                 </h5>
-                                <p class="date">December 4, 2017 at 3:12 pm </p>
-                                </div>
-                                <div class="reply-btn">
-                                <a href="#" class="btn-reply text-uppercase">reply</a>
-                                </div>
+                                <p class="date">{{$comment->created_at->diffForHumans()}} | {{$comment->created_at->format('Y-m-d h:i:s')}}</p>
                             </div>
                         </div>
                     </div>
                     </div>
                 </div>
-                <div class="comment-list">
-                    <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                            <img src="img/comment/comment_2.png" alt="">
-                        </div>
-                        <div class="desc">
-                            <p class="comment">
-                                Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                            </p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                </h5>
-                                <p class="date">December 4, 2017 at 3:12 pm </p>
-                                </div>
-                                <div class="reply-btn">
-                                <a href="#" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="comment-list">
-                    <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                            <img src="img/comment/comment_3.png" alt="">
-                        </div>
-                        <div class="desc">
-                            <p class="comment">
-                                Multiply sea night grass fourth day sea lesser rule open subdue female fill which them
-                                Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser
-                            </p>
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                <h5>
-                                    <a href="#">Emilly Blunt</a>
-                                </h5>
-                                <p class="date">December 4, 2017 at 3:12 pm </p>
-                                </div>
-                                <div class="reply-btn">
-                                <a href="#" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
+            @auth
             <div class="comment-form">
-                <h4>Leave a Reply</h4>
-                <form class="form-contact comment_form" action="#" id="commentForm">
+                <h4>{{__('Оставьте комментарий')}}</h4>
+                <form class="form-contact comment_form" action="{{route('client.requests.comment', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug])}}" method="POST" id="commentForm">
+                    @csrf
                     <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9"
-                                placeholder="Write Comment"></textarea>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <textarea required class="form-control w-100" name="text" id="text" cols="30" rows="9"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
                         <div class="form-group">
-                            <input class="form-control" name="name" id="name" type="text" placeholder="Name">
+                            <button class="button button-contactForm btn_1 boxed-btn">{{__('Отправить')}}</button>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-                        </div>
-                    </div>
-                    </div>
-                    <div class="form-group">
-                    <button type="submit" class="button button-contactForm btn_1 boxed-btn">Send Message</button>
                     </div>
                 </form>
             </div>
+            @endif
         </div>
         </div>
     </div>
