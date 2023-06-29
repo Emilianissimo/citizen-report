@@ -17,13 +17,6 @@ class SocialRequest extends Model
     use HasFactory;
     use Sluggable;
 
-    private $urgencyList = [
-        0 => '<button class="btn btn-info">Низкий</button>',
-        1 => '<button class="btn btn-secondary">Средний</button>',
-        2 => '<button class="btn btn-warning">Высокий</button>',
-        3 => '<button class="btn btn-danger">Очень высокий</button>',
-    ];
-
     public function sluggable(): array
     {
         return [
@@ -58,7 +51,13 @@ class SocialRequest extends Model
 
     public function getUrgency(): string
     {
-        return $this->urgencyList[$this->urgency];
+        $urgencyList = [
+            0 => '<button class="btn btn-info"><i style="color:rgb(145, 34, 34);" class="fa fa-exclamation-triangle" aria-hidden="true"></i>'.__("Низкий").'</button>',
+            1 => '<button class="btn btn-secondary"><i style="color:rgb(145, 34, 34);" class="fa fa-exclamation-triangle" aria-hidden="true"></i>'.__("Средний").'</button>',
+            2 => '<button class="btn btn-warning"><i style="color:rgb(145, 34, 34);" class="fa fa-exclamation-triangle" aria-hidden="true"></i>'.__("Высокий").'</button>',
+            3 => '<button class="btn btn-danger"><i style="color:rgb(145, 34, 34);" class="fa fa-exclamation-triangle" aria-hidden="true"></i>'.__("Очень высокий").'</button>',
+        ];
+        return $urgencyList[$this->urgency];
     }
 
     public function setStatus(int $id)
@@ -142,5 +141,14 @@ class SocialRequest extends Model
     public function remove()
     {
         $this->delete();
+    }
+
+    public function firstPic()
+    {
+        $firstPic = $this->gallery()->where('mime', 'in',['image/jpg', 'image/png', 'image/jpeg'])->first();      
+        if(!is_null($firstPic)){
+            return $firstPic->getFile();
+        }                 
+        return "/images/no-image.png";
     }
 }
