@@ -130,4 +130,14 @@ class SocialRequestsController extends Controller
         RequestComment::findOrFail($commentId)->remove();
         return redirect()->back();
     }
+
+    public function addReport(Request $request, $id)
+    {
+        $this->validate($request, ['report' => 'required']);
+
+        $req = SocialRequest::findOrFail($id);
+        $req->report = $request->get('report');
+        $req->save();
+        return redirect()->back();
+    }
 }

@@ -29,13 +29,9 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	Route::put('/profile', [MainController::class, 'profileUpdate'])->name('client.profile.update');
 
 	Route::get('/requests', [MainController::class, 'requests'])->name('client.requests.index');
-	Route::get('/requests/create', [MainController::class, 'requestCreate'])->name('client.requests.create');
-	Route::post('/requests/store', [MainController::class, 'requestStore'])->name('client.requests.store');
-
-	Route::get('/requests/{slug}', [MainController::class, 'singleRequest'])->name('client.requests.show');
-	Route::put('/requests/{slug}', [MainController::class, 'addFileRequest'])->name('client.requests.addFile');
-	Route::post('/requests/{slug}/comment', [MainController::class, 'storeCommentRequest'])->name('client.requests.comment');
-	Route::delete('/requests/{slug}/comment/{id}', [MainController::class, 'destroyCommentRequest'])->name('client.requests.comment.destroy');
+	Route::get('/requests/show/{slug}', [MainController::class, 'singleRequest'])->name('client.requests.show');
+	Route::post('/requests/show/{slug}/comment', [MainController::class, 'storeCommentRequest'])->name('client.requests.comment');
+	Route::delete('/requests/show/{slug}/comment/{id}', [MainController::class, 'destroyCommentRequest'])->name('client.requests.comment.destroy');
 	
 	Route::get('/organizations', [OrganizationsController::class, 'index'])->name('client.organizations.index');
 	Route::get('/organizations/{id}/posts', [OrganizationsController::class, 'posts'])->name('client.posts');
@@ -51,6 +47,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 		Route::post('/login', [AuthController::class, 'clientLogin'])->name('client.login');
 		Route::get('/register', [AuthController::class, 'registerPage'])->name('client.registerPage');
 		Route::post('/register', [AuthController::class, 'register'])->name('client.register');
+	});
+
+	Route::group(['middleware' => 'auth'], function() {
+		Route::get('/requests/create', [MainController::class, 'requestCreate'])->name('client.requests.create');
+		Route::post('/requests/store', [MainController::class, 'requestStore'])->name('client.requests.store');
+		Route::post('/requests/{slug}', [MainController::class, 'addFileRequest'])->name('client.requests.addFile');
 	});
 });
 
@@ -71,6 +73,7 @@ Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 
 	Route::resource('/statuses', 'RequestStatusesController');
 	Route::get('/requests', [SocialRequestsController::class, 'index'])->name('social_requests.index');
 	Route::get('/requests/{id}', [SocialRequestsController::class, 'show'])->name('social_requests.show');
+	Route::post('/requests/{id}/add-report', [SocialRequestsController::class, 'addReport'])->name('social_requests.addReport');
 	Route::post('/requests/{id}/change-status', [SocialRequestsController::class, 'changeStatus'])->name('social_requests.changeStatus');
 	Route::post('/requests/{id}/update-manager', [SocialRequestsController::class, 'updateManager'])->name('social_requests.updateManager');
 	Route::delete('/requests/{id}/comment/{comment_id}', [SocialRequestsController::class, 'destroyComment'])->name('social_requests.comment.destroy');

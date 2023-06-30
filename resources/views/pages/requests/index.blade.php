@@ -33,7 +33,7 @@
                         <div class="card mb-3 p-2">
                             <div class="d-flex profile-card">
                                 <div class="" style="padding: 1.25rem 0">
-                                    <img style="width: 100%; height: 10rem;object-fit:cover;object-position: center center;" src="{{$req->firstPic()}}" class="card-img" alt="Изображение">
+                                    <img style="width: 200px; height: 10rem;object-fit:cover;object-position: center center;" src="{{$req->firstPic()}}" class="card-img" alt="Изображение">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">

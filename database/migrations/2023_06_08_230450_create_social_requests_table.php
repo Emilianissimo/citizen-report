@@ -18,11 +18,12 @@ class CreateSocialRequestsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('text');
-            $table->text('coordinates')->default('Tashkent');
+            $table->text('coordinates')->nullable();
             $table->text('address');
+            $table->text('report')->nullable();
             $table->integer('urgency')->default(0); # 0 - low, 1 - normal, 2 - high, 3 - urgent
             $table->text('report_from_manager')->nullable();
-            $table->unsignedBigInteger('status_id')->nullable();
+            $table->unsignedBigInteger('status_id')->default(1);
             $table->foreign('status_id')->references('id')->on('request_statuses');
             $table->unsignedBigInteger('author_id')->nullable();
             $table->foreign('author_id')->references('id')->on('users');

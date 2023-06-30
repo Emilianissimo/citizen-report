@@ -22,6 +22,30 @@
         </div>
         <form action="{{route('client.requests.store', app()->getLocale())}}" method="POST">
             @csrf
+            <div class="form-group">
+              <label>{{__('Регион')}}</label>
+              <select name="region_id" class="select2 form-control">
+                @foreach($regions as $region)
+                <option value="{{$region->id}}">{{$region->getTitle(app()->getLocale())}}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{__('Категории')}}</label>
+              <select name="categories[]" multiple class="select2 form-control">
+                @foreach($categories as $category)
+                <option value="{{$category->id}}">{{$category->getTitle(app()->getLocale())}}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{__('Срочность')}}</label>
+              <select name="urgency" class="select2 form-control">
+                @foreach($urgency as $key => $value)
+                <option value="{{$key}}">{{$value}}</option>
+                @endforeach
+              </select>
+            </div>
             <div class="form-group first">
                 <label for="title">{{__('Заголовок')}}</label>
                 <input type="text" value="{{old('title')}}" required name="title" class="form-control" placeholder="{{__('Заголовок')}}" id="title">
@@ -35,6 +59,10 @@
                 <input type="coordinates" required name="coordinates" class="form-control" placeholder="34.2971631,69.2815243" id="coordinates">
             </div>
             
+            <div class="form-group">
+              <label for="">{{__('Подробное описание проблемы')}}</label>
+              <textarea name="text" class="form-control" rows="10"></textarea>
+            </div>
             <button class="btn btn-block btn-primary">{{__('Создать')}}</button>
 
         </form>

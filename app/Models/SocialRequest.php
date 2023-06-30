@@ -145,7 +145,7 @@ class SocialRequest extends Model
 
     public function firstPic()
     {
-        $firstPic = $this->gallery()->where('mime', 'in',['image/jpg', 'image/png', 'image/jpeg'])->first();      
+        $firstPic = $this->gallery()->whereIn('mime',['image/jpg', 'image/png', 'image/jpeg'])->first();      
         if(!is_null($firstPic)){
             return $firstPic->getFile();
         }                 

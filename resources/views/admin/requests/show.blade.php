@@ -62,6 +62,17 @@
                       {{$socialRequest->text}}
                   </p>
                   <hr>
+                  <h3>Составить отчет</h3>
+                  @if($socialRequest->manager && ($socialRequest->manager_id == Auth::user()->id || (Auth::user()->organization_id == $socialRequest->manager->organization_id && Auth::user()->is_org_admin) || Auth::user()->is_admin))
+                  <form action="{{route('social_requests.addReport', $socialRequest->id)}}" method="POST">
+                    @csrf
+                    <button class="w-100 btn btn-outline-primary">Сохранить</button>
+                    <textarea name="report" cols="30" rows="10">{{$socialRequest->report}}</textarea>
+                  </form>
+                  @else
+                  <b>Вы не можете добавлять отчет, обратитесь к администрации</b>
+                  @endif
+                  <hr>
                   <h3>Комментарии: {{$socialRequest->comments->count()}}</h3>
                   {{$comments->links()}}
                   @foreach($comments as $comment)
@@ -150,6 +161,14 @@
                     </ul>
                     <hr>
                     <h3>Галерея</h3>
+                    @if(Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
+                    <form action="{{ route('client.requests.addFile', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" required name="file" class="form-control">
+                        <sub>PNG, JPEG, JPG, MP4</sub>
+                        <button class="w-100 btn btn-success">{{__('Добавить')}}</button>
+                    </form>
+                    @endif
                     <hr>
                     <div class="row">
                       @forelse($gallery as $gallery)

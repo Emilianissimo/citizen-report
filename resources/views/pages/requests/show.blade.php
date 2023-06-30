@@ -29,7 +29,7 @@
     <div class="container">
         <div class="d-flex justify-content-center">
 
-        <div class="col-lg-8 posts-list">
+        <div class="col-md-8 posts-list">
 
             <div class="dropdown pb-2 row">
                 <div class="col-6">
@@ -42,7 +42,7 @@
 
             <div class="single-post">
                 <div class="feature-img">
-                    <img class="img-fluid" src="{{$socialRequest->firstPic()}}" alt="">
+                    <img class="img-fluid w-100" style="object-fit: cover; height: 400px" src="{{$socialRequest->firstPic()}}" alt="">
                 </div>
                 <div class="blog_details">
                     <h2>
@@ -68,7 +68,7 @@
                     <hr>
                     <div class="row">
                         @forelse($socialRequest->gallery as $gallery)
-                        <div class="col-md-4">
+                        <div class="col-md-6 my-3 p-2">
                             {!!$gallery->getHtmlBlock()!!}
                         </div>
                         @empty
@@ -128,6 +128,12 @@
                     </div>
                 </div>
             </div>
+            <div class="blog-details">
+                <hr>
+                <h2>{{__('Отчет')}}</h2>
+                <hr>
+                {!!$socialRequest->report ?? __('Отчета пока нет')!!}
+            </div>
             <div class="comments-area">
                 <h4>{{__('Комментарии')}}: {{$socialRequest->comments()->count()}}</h4>
                 @foreach($comments as $comment)
@@ -179,6 +185,25 @@
             </div>
             @endif
         </div>
+        @auth
+        @if($socialRequest->author_id == Auth::user()->id || Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
+        <div class="col-md-4">
+            <div class="blog_right_sidebar"style="position:sticky !important;top:150px;">
+                <aside class="single_sidebar_widget post_category_widget">
+                    <form action="{{ route('client.requests.addFile', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <h4 class="widget_title">{{__('Добавить медиа')}}</h4>
+                        <div class="p-3">
+                            <input type="file" required name="file" class="form-control">
+                            <sub>PNG, JPEG, JPG, MP4</sub>
+                        </div>
+                        <button class="w-100 btn btn-success">{{__('Добавить')}}</button>
+                    </form>
+                </aside>
+            </div>
+        </div>
+        @endif
+        @endauth
         </div>
     </div>
 </section>

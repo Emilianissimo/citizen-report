@@ -26,24 +26,28 @@ class Gallery extends Model
     {
         return $this->belongsTo(SocialRequest::class, 'request_id');
     }
-    
-    public static function add($requestId=null, $postId=null)
-    {
-        if (is_null($requestId) && is_null($requestId)){
-            return;
-        }
-        
+
+    public static function addRequest($file, $requestId)
+    {   
         $gallery = new self;
 
-        if(!is_null($requestId)){
-            $gallery->request_id = $requestId;
-        }
-        if(!is_null($postId)){
-            $gallery->post_id = $postId;
-        }
+        $gallery->request_id = $requestId;
+        $gallery->mime = $file->getClientMimeType();
         $gallery->save();
+        $gallery->uploadFile($file);
 
-        return $$gallery;
+        return $gallery;
+    }
+    
+    public static function addPost($file, $postId)
+    {
+        $gallery = new self;
+        $gallery->post_id = $postId;
+        $gallery->mime = $file->getClientMimeType();
+        $gallery->save();
+        $gallery->uploadFile($file);
+
+        return $gallery;
     }
 
     public function remove()
@@ -60,16 +64,15 @@ class Gallery extends Model
 
         $this->removeFile();
         $filename = Str::random(10).'.'.$file->extension();
-        $file->storeAs('uploads/files/' . $this->request_id, $filename);
+        $file->storeAs('uploads/files/' . $this->id, $filename);
         $this->file = $filename;
-        $this->mime = $file->getClientMimeType();
         $this->save();
     }
 
     public function removeFile()
     {
         if ($this->file !=null) {
-			Storage::delete('uploads/files/'. $this->request_id . '/' . $this->file);
+			Storage::delete('uploads/files/'. $this->id . '/' . $this->file);
 		}
     }
 
@@ -78,7 +81,7 @@ class Gallery extends Model
         if ($this->file == null) {
 			return '/img/no-image.png';
 		}
-		return '/uploads/files/' . $this->request_id . '/' . $this->file;
+		return '/uploads/files/' . $this->id . '/' . $this->file;
     }
 
     public function getHtmlBlock()

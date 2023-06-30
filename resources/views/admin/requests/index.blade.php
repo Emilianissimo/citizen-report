@@ -64,7 +64,7 @@
               <table id="example3" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Дата</th>
                     <th>Регион</th>
                     <th>Заголовок</th>
                     <th>Адрес</th>
@@ -76,7 +76,7 @@
                   </tr>
                 <tfoot>
                   <tr>
-                    <th>ID</th>
+                    <th>Дата</th>
                     <th>Регион</th>
                     <th>Заголовок</th>
                     <th>Адрес</th>
@@ -91,7 +91,7 @@
                 <tbody>
                   @foreach($requests as $r)
                   <tr>
-                    <td>{{$r->id}}</td>
+                    <td>{{$r->created_at}}</td>
                     <td>{{$r->region->title_ru}}</td>
                     <td>{{$r->title}}</td>
                     <td>{{$r->address}}</td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Gallery;
 use App\Models\Organization;
 use App\Models\Region;
 use App\Models\RequestComment;
@@ -82,7 +83,7 @@ class MainController extends Controller
 
     public function singleRequest($lang, $slug)
     {
-        $socialRequest = SocialRequest::where('slug', $slug)->first();
+        $socialRequest = SocialRequest::where('slug', $slug)->firstOrFail();
         $comments = $socialRequest->comments()->orderBy('created_at', 'DESC')->paginate(50);
         return view('pages.requests.show', compact(
             'socialRequest',
@@ -144,8 +145,24 @@ class MainController extends Controller
         ]);
     }
 
-    public function addFileRequest()
+    public function addFileRequest(Request $request, $lang, $slug)
     {
-        return;
+        $req = SocialRequest::where('slug', $slug)->firstOrFail();
+        if(
+            Auth::user()->id ==$req->author_id ||
+            Auth::user()->is_admin ||
+            Auth::user()->id == $req->manager_id || 
+            (
+                Auth::user()->is_org_admin && 
+                Auth::user()->organization_id == $req->manager->organization_id
+                )
+            )
+        {
+            $this->validate($request, [
+                'file' => 'required|mimes:jpng,jpeg,png,mp4',
+            ]);
+            Gallery::addRequest($request->file('file'), $req->id);
+        }
+        return redirect()->back();
     }
 }
