@@ -72,4 +72,13 @@ class Post extends Model
     {
         $this->delete();
     }
+
+    public function firstPic()
+    {
+        $firstPic = $this->gallery()->whereIn('mime',['image/jpg', 'image/png', 'image/jpeg'])->first();      
+        if(!is_null($firstPic)){
+            return $firstPic->getFile();
+        }                 
+        return "/images/no-image.png";
+    }
 }

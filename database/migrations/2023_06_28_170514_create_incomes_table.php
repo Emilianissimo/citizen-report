@@ -28,7 +28,8 @@ class CreateIncomesTable extends Migration
             'text' => 'тест доход',
             'amount' => '5000.00',
             'user_id' => 3,
-            'organization_id' => 1
+            'organization_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
 
         DB::table('incomes')->insert(array(
@@ -36,7 +37,8 @@ class CreateIncomesTable extends Migration
             'from' => 'Test donater',
             'amount' => '15000.00',
             'user_id' => 3,
-            'organization_id' => 1
+            'organization_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
     }
 

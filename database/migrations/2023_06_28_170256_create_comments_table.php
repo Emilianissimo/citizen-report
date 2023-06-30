@@ -27,12 +27,14 @@ class CreateCommentsTable extends Migration
             'text' => 'Test Comment',
             'user_id' => 1,
             'post_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
 
         DB::table('comments')->insert(array(
             'text' => 'Top',
             'user_id' => 3,
             'post_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
     }
 

@@ -159,9 +159,27 @@ class MainController extends Controller
             )
         {
             $this->validate($request, [
-                'file' => 'required|mimes:jpng,jpeg,png,mp4',
+                'file' => 'required|mimes:jpg,jpeg,png,mp4',
             ]);
             Gallery::addRequest($request->file('file'), $req->id);
+        }
+        return redirect()->back();
+    }
+
+    public function destroyFileRequest($lang, $slug, $id)
+    {
+        $req = SocialRequest::where('slug', $slug)->firstOrFail();
+        if(
+            Auth::user()->id ==$req->author_id ||
+            Auth::user()->is_admin ||
+            Auth::user()->id == $req->manager_id || 
+            (
+                Auth::user()->is_org_admin && 
+                Auth::user()->organization_id == $req->manager->organization_id
+                )
+            )
+        {
+            $req->gallery()->findOrFail($id)->remove();
         }
         return redirect()->back();
     }

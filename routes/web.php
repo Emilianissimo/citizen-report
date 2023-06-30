@@ -30,14 +30,10 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 	Route::get('/requests', [MainController::class, 'requests'])->name('client.requests.index');
 	Route::get('/requests/show/{slug}', [MainController::class, 'singleRequest'])->name('client.requests.show');
-	Route::post('/requests/show/{slug}/comment', [MainController::class, 'storeCommentRequest'])->name('client.requests.comment');
-	Route::delete('/requests/show/{slug}/comment/{id}', [MainController::class, 'destroyCommentRequest'])->name('client.requests.comment.destroy');
 	
 	Route::get('/organizations', [OrganizationsController::class, 'index'])->name('client.organizations.index');
 	Route::get('/organizations/{id}/posts', [OrganizationsController::class, 'posts'])->name('client.posts');
 	Route::get('/organizations/{id}/posts/{slug}', [OrganizationsController::class, 'show'])->name('client.posts.show');
-	Route::post('/organizations/{id}/posts/{slug}/comment', [OrganizationsController::class, 'comment'])->name('client.posts.comment');
-	Route::delete('/organizations/{id}/posts/{slug}/comment/{comment_id}/delete', [OrganizationsController::class, 'commentDelete'])->name('client.posts.comment.destroy');
 	
 	Route::get('/organizations/{id}/incomes', [OrganizationsController::class, 'incomes'])->name('client.incomes');
 	Route::get('/organizations/{id}/consumptions', [OrganizationsController::class, 'consumptions'])->name('client.consumptions');
@@ -53,6 +49,19 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 		Route::get('/requests/create', [MainController::class, 'requestCreate'])->name('client.requests.create');
 		Route::post('/requests/store', [MainController::class, 'requestStore'])->name('client.requests.store');
 		Route::post('/requests/{slug}', [MainController::class, 'addFileRequest'])->name('client.requests.addFile');
+		Route::delete('/requests/{slug}/file/{id}', [MainController::class, 'destroyFileRequest'])->name('client.requests.destroyFileRequest');
+		Route::post('/requests/show/{slug}/comment', [MainController::class, 'storeCommentRequest'])->name('client.requests.comment');
+		Route::delete('/requests/show/{slug}/comment/{id}', [MainController::class, 'destroyCommentRequest'])->name('client.requests.comment.destroy');
+
+		Route::get('/organizations/{id}/posts/{slug}/create', [OrganizationsController::class, 'create'])->name('client.posts.create');
+		Route::post('/organizations/{id}/posts/{slug}/store', [OrganizationsController::class, 'store'])->name('client.posts.store');
+		Route::get('/organizations/{id}/posts/{slug}/edit', [OrganizationsController::class, 'edit'])->name('client.posts.edit');
+		Route::put('/organizations/{id}/posts/{slug}/update', [OrganizationsController::class, 'update'])->name('client.posts.update');
+		Route::delete('/organizations/{id}/posts/{slug}/delete', [OrganizationsController::class, 'destroy'])->name('client.posts.destroy');
+		Route::post('/organizations/{id}/posts/{slug}/add-file', [OrganizationsController::class, 'addFile'])->name('client.posts.addFile');
+		Route::delete('/organizations/{id}/posts/{slug}/file/{file_id}', [OrganizationsController::class, 'destroyFile'])->name('client.posts.destroyFile');
+		Route::post('/organizations/{id}/posts/{slug}/comment', [OrganizationsController::class, 'comment'])->name('client.posts.comment');
+		Route::delete('/organizations/{id}/posts/{slug}/comment/{comment_id}/delete', [OrganizationsController::class, 'commentDelete'])->name('client.posts.comment.destroy');
 	});
 });
 

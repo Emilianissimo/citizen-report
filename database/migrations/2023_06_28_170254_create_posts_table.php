@@ -33,6 +33,7 @@ class CreatePostsTable extends Migration
             'text' => 'test data',
             'user_id' => 2,
             'organization_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
     }
 

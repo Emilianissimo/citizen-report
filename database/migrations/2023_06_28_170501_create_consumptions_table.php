@@ -27,14 +27,16 @@ class CreateConsumptionsTable extends Migration
             'text' => 'тест траты',
             'amount' => '5000.00',
             'user_id' => 3,
-            'organization_id' => 1
+            'organization_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
 
         DB::table('consumptions')->insert(array(
             'text' => 'тест траты',
             'amount' => '15000.00',
             'user_id' => 3,
-            'organization_id' => 1
+            'organization_id' => 1,
+            'created_at' => '2023-12-12T12:12:12'
         ));
     }
 
