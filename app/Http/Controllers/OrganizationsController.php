@@ -75,6 +75,36 @@ class OrganizationsController extends Controller
         return redirect()->back();
     }
 
+    public function incomes($lang, $id)
+    {
+        return redirect()->back();
+    }
+
+    public function addIncome(Request $request, $lang, $id)
+    {
+        return redirect()->back();
+    }
+
+    public function deleteIncome($lang, $id, $incomeId)
+    {
+        return redirect()->back();
+    }
+
+    public function consumptions($lang, $id)
+    {
+        return redirect()->back();
+    }
+
+    public function addConsumption(Request $request, $lang, $id)
+    {
+        return redirect()->back();
+    }
+
+    public function deleteConsumption($lang, $id, $consumptionId)
+    {
+        return redirect()->back();
+    }
+
     public function comment(Request $request, $lang, $id, $slug)
     {
         $this->validate($request, [

@@ -62,6 +62,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 		Route::delete('/organizations/{id}/posts/{slug}/file/{file_id}', [OrganizationsController::class, 'destroyFile'])->name('client.posts.destroyFile');
 		Route::post('/organizations/{id}/posts/{slug}/comment', [OrganizationsController::class, 'comment'])->name('client.posts.comment');
 		Route::delete('/organizations/{id}/posts/{slug}/comment/{comment_id}/delete', [OrganizationsController::class, 'commentDelete'])->name('client.posts.comment.destroy');
+
+		Route::post('/organizations/{id}/consumptions', [OrganizationsController::class, 'addConsumption'])->name('client.consumptions.store');
+		Route::delete('/organizations/{id}/consumptions/{consumption_id}', [OrganizationsController::class, 'deleteConsumption'])->name('client.consumptions.destroy');
+
+		Route::post('/organizations/{id}/incomes', [OrganizationsController::class, 'addIncome'])->name('client.incomes.store');
+		Route::delete('/organizations/{id}/incomes/{income_id}', [OrganizationsController::class, 'deleteIncome'])->name('client.incomes.destroy');
 	});
 });
 
