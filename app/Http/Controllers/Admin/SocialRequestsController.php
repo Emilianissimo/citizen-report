@@ -99,6 +99,8 @@ class SocialRequestsController extends Controller
         $comments = $socialRequest->comments()->orderBy('created_at', 'DESC')->paginate(20);
         $gallery = $socialRequest->gallery()->get();
 
+        // dd($socialRequest->manager);
+
         return view('admin.requests.show', compact(
             'socialRequest',
             'statuses',

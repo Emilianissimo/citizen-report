@@ -50,7 +50,7 @@
                 <tbody>
                   @foreach($consumptions as $consumption)
                   <tr>
-                    <td>{{$consumption->text}}</td>
+                    <td>{!!$consumption->text!!}</td>
                     <td>{{$consumption->amount}}</td>
                     <td><img src="{{$consumption->getFile()}}" style="width: 200px" alt=""></td>
                     <td>{{$consumption->user->name}}</td>

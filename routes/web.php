@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\SocialRequestsController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrganizationsController;
+use App\Http\Controllers\ProfilesController;
+use App\Http\Controllers\Admin\PostsController;
+use App\Http\Controllers\Admin\FinancesController;
 use App\Http\Controllers\Admin\OrganizationsController as AdminOrganizationsController;
 
 /*
@@ -33,10 +36,11 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 	
 	Route::get('/organizations', [OrganizationsController::class, 'index'])->name('client.organizations.index');
 	Route::get('/organizations/{id}/posts', [OrganizationsController::class, 'posts'])->name('client.posts');
+	Route::get('/organizations/{id}/incomes', [OrganizationsController::class, 'getIncomes'])->name('client.organization.getIncomes');
+	Route::get('/organizations/{id}/consumptions', [OrganizationsController::class, 'getConsumptions'])->name('client.organization.getConsumptions');
+	Route::get('/organizations/{id}/requests', [OrganizationsController::class, 'getRequests'])->name('client.organization.getRequests');
+
 	Route::get('/organizations/{id}/posts/{slug}', [OrganizationsController::class, 'show'])->name('client.posts.show');
-	
-	Route::get('/organizations/{id}/incomes', [OrganizationsController::class, 'incomes'])->name('client.incomes');
-	Route::get('/organizations/{id}/consumptions', [OrganizationsController::class, 'consumptions'])->name('client.consumptions');
 
 	Route::group(['middleware' => 'guest'], function() {
 		Route::get('/login', [AuthController::class, 'clientLoginPage'])->name('client.loginPage');
@@ -68,6 +72,12 @@ Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'm
 
 		Route::post('/organizations/{id}/incomes', [OrganizationsController::class, 'addIncome'])->name('client.incomes.store');
 		Route::delete('/organizations/{id}/incomes/{income_id}', [OrganizationsController::class, 'deleteIncome'])->name('client.incomes.destroy');
+
+		Route::get('/profiles/{id}', [ProfilesController::class, 'index'])->name('client.profile.index');
+		Route::get('/profiles/settings/{id}', [ProfilesController::class, 'profileSettings'])->name('client.profile.profileSettings');
+		Route::get('/profiles/delete/{id}', [ProfilesController::class, 'profilePictureDestroy'])->name('client.profile.profilePictureDestroy');
+		Route::post('/profiles/{id}/update', [ProfilesController::class, 'update'])->name('client.profile.update');
+
 	});
 });
 
@@ -86,6 +96,7 @@ Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 
 	Route::resource('/categories', 'CategoriesController');
 	Route::resource('/regions', 'RegionsController');
 	Route::resource('/statuses', 'RequestStatusesController');
+
 	Route::get('/requests', [SocialRequestsController::class, 'index'])->name('social_requests.index');
 	Route::get('/requests/{id}', [SocialRequestsController::class, 'show'])->name('social_requests.show');
 	Route::post('/requests/{id}/add-report', [SocialRequestsController::class, 'addReport'])->name('social_requests.addReport');
@@ -99,11 +110,40 @@ Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 
 	Route::resource('/organizations', 'OrganizationsController');
 	Route::get('/organizations/{id}/incomes', [AdminOrganizationsController::class, 'incomes'])->name('organizations.incomes');
 	Route::get('/organizations/{id}/consumptions', [AdminOrganizationsController::class, 'consumptions'])->name('organizations.consumptions');
+
 	Route::resource('/posts', 'PostsController');
+	Route::get('/posts/postsList/{id}', [PostsController::class, 'postsListForAdmin'])->name('posts.postsList');
+	Route::get('/posts/post_gallery_delete/{id}', [PostsController::class, 'postGalleryDestroy'])->name('posts.gallery.delete');
+	Route::get('/posts/post_delete/{id}', [PostsController::class, 'delete'])->name('posts.delete');
+
+	Route::get('/finances/index', [FinancesController::class, 'index'])->name('consumptions.index');
+	Route::get('/finances/listChoice/{id}', [FinancesController::class, 'listChoise'])->name('consumptions.listChoise');
+
+
 });
 
 Route::group(['prefix'=>'dashboard', 'namespace'=>'App\Http\Controllers\Admin', 'middleware' => 
 'org_admin'], function(){
 	Route::resource('/users', 'UsersController');
 	Route::put('/profile/organization', [AdminController::class, 'updateOrganization'])->name('profile.updateOrganization');
+	Route::resource('/posts', 'PostsController');
+	Route::get('/posts/post_gallery_delete/{id}', [PostsController::class, 'postGalleryDestroy'])->name('posts.gallery.delete');
+	Route::get('/posts/post_delete/{id}', [PostsController::class, 'delete'])->name('posts.delete');
+
+	Route::get('/finances/index', [FinancesController::class, 'index'])->name('finances.index');
+	Route::get('/finances/consumptionCreate', [FinancesController::class, 'consumptionCreate'])->name('finances.consumptionCreate');
+	Route::post('/finances/consumptionStore', [FinancesController::class, 'consumptionStore'])->name('finances.consumptionStore');
+	Route::get('/finances/consumptions', [FinancesController::class, 'consumptions'])->name('finances.consumptions');
+	Route::get('/finances/consumptionEdit/{id}', [FinancesController::class, 'consumptionEdit'])->name('finances.consumptionEdit');
+	Route::put('/finances/consumptionUpdate/{id}', [FinancesController::class, 'consumptionUpdate'])->name('finances.consumptionUpdate');
+	Route::get('/finances/consumptionDestroy/{id}', [FinancesController::class, 'consumptionDestroy'])->name('finances.consumptionDestroy');
+	Route::get('/finances/consumptionImageDestroy/{id}', [FinancesController::class, 'consumptionImageDestroy'])->name('finances.consumptionImageDestroy');
+
+	Route::get('/finances/incomeCreate', [FinancesController::class, 'incomeCreate'])->name('finances.incomeCreate');
+	Route::post('/finances/incomeStore', [FinancesController::class, 'incomeStore'])->name('finances.incomeStore');
+	Route::get('/finances/incomeEdit/{id}', [FinancesController::class, 'incomeEdit'])->name('finances.incomeEdit');
+	Route::put('/finances/incomeUpdate/{id}', [FinancesController::class, 'incomeUpdate'])->name('finances.incomeUpdate');
+	Route::get('/finances/incomeDestroy/{id}', [FinancesController::class, 'incomeDestroy'])->name('finances.incomeDestroy');
+	Route::get('/finances/incomeImageDestroy/{id}', [FinancesController::class, 'incomeImageDestroy'])->name('finances.incomeImageDestroy');
+
 });

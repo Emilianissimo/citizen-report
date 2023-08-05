@@ -74,11 +74,8 @@ class SocialRequest extends Model
         return $this->belongsTo(User::class, 'manager_id');
     }
 
-    public function setManager(int $id)
-    {
-        if (is_null($id)){
-            return;
-        }
+    public function setManager($id)
+    {   
         $this->manager_id = $id;
         $this->save();
     }

@@ -50,7 +50,20 @@
   .first-header-loginButton{
     margin-top: 6px;
   }
+
+  .card-image{
+      text-align: center;
+  }
+  
+  .request-card{
+      display: block !important;
+  }
+
+  .requests-parent{
+    display: block !important;
+  }
 }
+
 
 @media (max-width: 576px) {
   .first-header{

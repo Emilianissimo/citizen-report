@@ -129,6 +129,7 @@
                         <!-- <div class="thumb">
                             <img src="img/comment/comment_1.png" alt="">
                         </div> -->
+                        @auth
                         @if(Auth::user()->is_admin || Auth::user()->id == $comment->user_id)
                         <form action="{{route('client.posts.comment.destroy', ['locale'=> app()->getLocale(), 'id'=>$organization->id, 'slug' => $post->slug, 'comment_id' => $comment->id])}}" method="POST" class="mr-3">
                             @csrf
@@ -136,6 +137,7 @@
                             <button class="btn btn-outline-danger" style="height: 100%;"><i class="fa fa-trash"></i></button>
                         </form>
                         @endif
+                        @endauth
                         <div class="desc">
                             <p class="comment">
                                 {{$comment->text}}

@@ -7,6 +7,7 @@ use App\Models\Gallery;
 use App\Models\Organization;
 use App\Models\Post;
 use App\Models\Region;
+use App\Models\SocialRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,11 +30,51 @@ class OrganizationsController extends Controller
     public function posts($lang, $id)
     {
         $organization = Organization::findOrFail($id);
-        $posts = $organization->posts()->orderBy('created_at', "DESC")->paginate(12);
+        $posts = $organization->posts()->orderBy('created_at', "DESC")->paginate(1);
+        $incomes = $organization->incomes()->orderBy('created_at', "DESC")->paginate(1);
+        $consumptions = $organization->consumptions()->orderBy('created_at', "DESC")->paginate(1);
+        $requests = SocialRequest::whereHas('manager.organization')->orderBy('created_at', "DESC")->paginate(1);
+        // dd($requests);
 
         return view('pages.organizations.posts', compact(
             'posts',
-            'organization'
+            'organization',
+            'incomes',
+            'consumptions',
+            'requests'
+        ));
+    }
+
+    public function getIncomes($lang, $id)
+    {
+        $organization = Organization::findOrFail($id);
+        $incomes = $organization->incomes()->orderBy('created_at', "DESC")->paginate(1);
+
+        return view('pages.organizations.incomes', compact(
+            'organization',
+            'incomes',
+        ));
+    }
+
+    public function getConsumptions($lang, $id)
+    {
+        $organization = Organization::findOrFail($id);
+        $consumptions = $organization->consumptions()->orderBy('created_at', "DESC")->paginate(1);
+
+        return view('pages.organizations.consumptions', compact(
+            'organization',
+            'consumptions'
+        ));
+    }
+
+    public function getRequests($lang, $id)
+    {
+        $organization = Organization::findOrFail($id);
+        $requests = SocialRequest::whereHas('manager.organization')->orderBy('created_at', "DESC")->paginate(1);
+
+        return view('pages.organizations.requests', compact(
+            'organization',
+            'requests'
         ));
     }
 

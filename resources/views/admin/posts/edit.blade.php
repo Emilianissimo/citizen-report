@@ -12,7 +12,14 @@
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Главная</a></li>
-          <li class="breadcrumb-item active">Статьи</li>
+          @if(Auth::user()->is_admin == 1)
+          <li class="breadcrumb-item active"><a href="{{route('posts.index')}}">Организации</a></li>
+          <li class="breadcrumb-item active"><a href="{{route('posts.postsForAdmin,$post->id')}}">Посты</a></li>
+          <li class="breadcrumb-item active">Изменить</li>
+          @elseif(Auth::user()->is_org_admin ==1)
+          <li class="breadcrumb-item active"><a href="{{route('posts.index')}}">Посты</a></li>
+          <li class="breadcrumb-item active">Изменить</li>
+          @endif
         </ol>
       </div>
     </div>
@@ -36,95 +43,42 @@
             <div class="row" style="padding: 20px;">
               <div class="col-md-6">
                   <div class="form-group">
-                    <label for="title_ru">Название Ру <span style="color:red">*</span></label>
-                    <input type="text" class="form-control" id="title_ru" placeholder="" value="{{$post->title_ru}}" name="title_ru">
+                    <label for="title">Название<span style="color:red">*</span></label>
+                    <input type="text" class="form-control" id="title" placeholder="" value="{{$post->title}}" name="title">
                   </div>
               </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="title_en">Название Уз</label>
-                    <input type="text" class="form-control" id="title_uz" placeholder="" value="{{$post->title_uz}}" name="title_uz">
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="title_uz">SEO заголовок RU <span id="seo_title_ru_counter">0</span>/60</label>
-                    <input type="text" class="form-control" id="seo_title_ru" placeholder="Если пустой, будет взят и обрезан из актуального названия" value="{{$post->seo_title_ru}}" name="seo_title_ru">
-                  </div>
-                  <div class="form-group">
-                    <label for="title_uz">SEO заголовок UZ <span id="seo_title_uz_counter">0</span>/60</label>
-                    <input type="text" class="form-control" id="seo_title_uz" placeholder="Если пустой, будет взят и обрезан из актуального названия" value="{{$post->seo_title_uz}}" name="seo_title_uz">
-                  </div>
-                  <div class="form-group">
-                    <label for="title_uz">SEO ключи RU</label>
-                    <input type="text" class="form-control" required id="seo_keys_ru" placeholder="Через запятую, прим.: Ташкент, Хирургия, Врачи в ташкенте" value="{{$post->seo_keys_ru}}" name="seo_keys_ru">
-                  </div>
-                  <div class="form-group">
-                    <label for="title_uz">SEO ключи UZ</label>
-                    <input type="text" class="form-control" required id="seo_keys_uz" placeholder="Через запятую, прим.: Ташкент, Хирургия, Врачи в ташкенте" value="{{$post->seo_keys_uz}}" name="seo_keys_uz">
-                  </div>
-                  <div class="form-group">
-                    <label for="title_uz">SEO описание RU <span id="seo_desc_ru_counter">0</span>/165</label>
-                    <input type="text" class="form-control" id="seo_desc_ru" placeholder="Если пустой, будет взят и обрезан из актуального описания" value="{{$post->seo_desc_ru}}" name="seo_desc_ru">
-                  </div>
-                  <div class="form-group">
-                    <label for="title_uz">SEO описание UZ <span id="seo_desc_uz_counter">0</span>/165</label>
-                    <input type="text" class="form-control" id="seo_desc_uz" placeholder="Если пустой, будет взят и обрезан из актуального описания" value="{{$post->seo_desc_uz}}" name="seo_desc_uz">
-                  </div>
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group" style="border: 1px solid red; padding: 10px">
-                    <label for="image" style="width: 100%">Картинка превью <br> <div style="background-image: url({{$post->getImage()}})" class="video-image"></div></label>
-                    <input type="file" id="image" name="image">
-
-                    <p class="help-block">Картинка в формате JPG, PNG</p>
-                  </div>              
-              </div>
-              <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Категории</label>
-                    {{Form::select('categories[]',
-                      $categories, $post->categories->pluck('id')->all(), ['class' => 'form-control select2 select2-danger', 'multiple' => 'multiple', 'data-placeholder'=>'Выберите Категории']
-                    )}}
-                  </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                    <label>Врач</label>
-                    {{Form::select('doctor_id',
-                      $doctors, $post->doctor_id, ['class' => 'form-control select2 select2-danger']
-                    )}}
-                </div>
-              </div>
-              
-              
 
               <!-- checkbox -->
             
             <div class="col-md-6">
               <div class="form-group">
-                <label for="description_ru">Описание Ру <span style="color:red">*</span></label>
-                <textarea name="description_ru" required cols="30" rows="10" class="form-control">{{$post->description_ru}}</textarea>
+                <label for="text">Описание Ру <span style="color:red">*</span></label>
+                <textarea name="text" required cols="30" rows="10" class="form-control">{{$post->text}}</textarea>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                  <label for="description_uz">Описание Уз</label>
-                  <textarea name="description_uz" cols="30" rows="10" class="form-control">{{$post->description_uz}}</textarea>
-              </div>
+
+            <div class="col-md-12">
+              <div class="form-group" style="border: 1px solid red; padding: 10px">
+                <label for="image" style="width: 100%;object-fit: cover;object-position: center center;">Картинка превью <br> <div style="background-image: url('{{$post->firstPic()}}')" class="video-image"></div></label>
+                <input type="file" id="image" name="image">
+
+                <p class="help-block">Картинка в формате JPG, PNG</p>
+              </div>              
+          </div>
+
+            <div class="col-md-12 row" style="position: relative;">
+                @foreach($post->gallery as $gallery)
+                  <div  class="col-md-4 mt-2">
+                    <img class="w-100" style="height:17rem;object-fit: cover;object-position: center center;" src="{{$gallery->getFile()}}" alt="">
+                    <div class="trash-icon" style="position: absolute;top: 5px;right: 10px;">
+                      <a href="{{route('posts.gallery.delete', $gallery->id)}}"><i style="font-size: 25px;color:red;" class="fa fa-trash"></i></a>
+                    </div>
+                  </div>
+                @endforeach
             </div>
+
             <!-- checkbox -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>
-                   {{Form::checkbox('is_published', '1', $post->is_published, ['class'=>'minimal', 'id'=>'is_published'])}}
-                  </label>
-                  <label for="publish">
-                    Опубликовано
-                  </label>
-                </div>  
-              </div>
-              <div class="col-md-12">
+              <div class="col-md-12 mt-5">
                   <div class="box-footer">
                       <a href="{{route('posts.index')}}" class="btn btn-default">Назад</a>
                       <button class="btn btn-warning float-right">Изменить</button>
@@ -188,4 +142,10 @@
     }
   })
 </script>
+
+<style>
+  .trash-icon:hover{
+    scale: 2;
+  }
+</style>
 @endsection

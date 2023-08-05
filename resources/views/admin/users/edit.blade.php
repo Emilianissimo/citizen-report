@@ -43,6 +43,22 @@
                     <input type="text" class="form-control" id="name" placeholder="" value="{{$user->name}}" name="name">
                   </div>
                   <div class="form-group">
+                    <label for="email">Email<span style="color:red">*</span></label>
+                    <input type="email" class="form-control" id="email" placeholder="" value="{{$user->email}}" name="email">
+                  </div>
+                  
+                    <div class="form-group">
+                      <label>Фото<span style="color:red">*</span></label>
+                      <div class="col-md-4 my-3" style="position:relative;">
+                        <img src="{{$user->getFile()}}" alt="" class="w-100">
+                        <div class="trash-icon" style="position: absolute;top: 5px;right: 20px;">
+                            <a href="{{route('client.profile.profilePictureDestroy', [app()->getLocale(), $user->id])}}"><i style="font-size: 25px;color:red;" class="fa fa-trash"></i></a>
+                        </div>
+                      </div>
+                      <input type="file" class="form-control" name="file">
+                    </div>
+
+                  <div class="form-group">
                     <label for="password">Пароль</label>
                     <input type="password" class="form-control" id="password" placeholder="" name="password">
                   </div>
@@ -54,16 +70,37 @@
                     </label>
                     <br>
                     <label>
+                      <input type="checkbox" @if($user->id == 1) disabled @endif name="is_org_admin" @if($user->is_org_admin) checked @endif>
+                      Права админа организации
+                    </label>
+                    <br>
+                    <label>
                       <input type="checkbox" @if($user->id == 1) disabled @endif name="is_staff" @if($user->is_staff) checked @endif>
                       Права служащего
                     </label>
                   </div>
+                  @elseif(Auth::user()->is_org_admin)
+                    <div class="form-group">
+                      <label>
+                        <input type="checkbox" @if($user->id == 1) disabled @endif name="is_staff" @if($user->is_staff) checked @endif>
+                        Права служащего
+                      </label>
+                    </div>
                   @endif
                   <div class="form-group">
                       <label>Организация</label>
-                      {{Form::select('organization_id',
-                        $organizations, $user->organization_id, ['class' => 'form-control select2', 'data-placeholder'=>'Выберите ориганизации']
-                      )}}
+                      <select name="organization_id" class="form-control select2" data-placeholder="Выберите организацию">
+                          <option value="set_null" @if(is_null($user->organization_id)) selected @endif>пусто</option>
+                          @if(Auth::user()->is_org_admin)
+                            @foreach($organizations[0] as $id => $organization)
+                                <option value="{{ $id }}" @if($id === $user->organization_id) selected @endif>{{ $organization }}</option>
+                            @endforeach
+                          @elseif(Auth::user()->is_admin)
+                            @foreach($organizations as $id => $organization)
+                                <option value="{{ $id }}" @if($id === $user->organization_id) selected @endif>{{ $organization }}</option>
+                            @endforeach
+                          @endif
+                      </select>
                   </div>
               </div>
               <div class="col-md-12">

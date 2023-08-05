@@ -38,9 +38,19 @@
                     <input type="text" class="form-control" id="name" placeholder="" value="{{old('name')}}" name="name">
                   </div>
                   <div class="form-group">
+                    <label for="email">email<span style="color:red">*</span></label>
+                    <input type="email" class="form-control" id="email" placeholder="" value="{{old('email')}}" name="email">
+                  </div>
+                  <div class="form-group">
                     <label for="phone">Телефон</label>
                     <input type="text" class="form-control" id="phone" placeholder="" value="{{old('phone')}}" name="phone">
                   </div>
+
+                  <div class="form-group">
+                    <label>Фото</label>
+                    <input type="file" class="form-control" name="file">
+                  </div>
+
                   <div class="form-group">
                     <label for="password">Пароль</label>
                     <input type="password" class="form-control" id="password" placeholder="" value="{{old('password')}}" name="password">
@@ -53,6 +63,11 @@
                     </label>
                     <br>
                     <label>
+                      <input type="checkbox" name="is_org_admin">
+                      Права админа организации
+                    </label>
+                    <br>
+                    <label>
                       <input type="checkbox" name="is_staff">
                       Права служащего
                     </label>
@@ -60,9 +75,18 @@
                   @endif
                   <div class="form-group">
                       <label>Подопечные регионы</label>
-                      {{Form::select('organization_id',
-                        $organizations, null, ['class' => 'form-control select2', 'data-placeholder'=>'Выберите ориганизации']
-                      )}}
+                      <select name="organization_id" class="form-control select2" data-placeholder="Выберите организацию">
+                          <option value="set_null">пусто</option>
+                          @if(Auth::user()->is_org_admin)
+                            @foreach($organizations[0] as $id => $organization)
+                                <option value="{{ $id }}">{{ $organization }}</option>
+                            @endforeach
+                          @elseif(Auth::user()->is_admin)
+                            @foreach($organizations as $id => $organization)
+                                <option value="{{ $id }}">{{ $organization }}</option>
+                            @endforeach
+                          @endif
+                      </select>
                   </div>
               </div>
               <div class="col-md-12">

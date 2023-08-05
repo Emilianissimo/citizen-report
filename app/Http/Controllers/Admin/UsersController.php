@@ -54,6 +54,7 @@ class UsersController extends Controller
         $this->validate($request, [
             'name'      => 'required',
             'phone'     => 'required|unique:users',
+            'email'     => 'required',
             'password'  => 'required',
         ]);
 
@@ -61,7 +62,17 @@ class UsersController extends Controller
         $user->setAdmin($request->filled('is_admin'));
         $user->setStaff($request->filled('is_staff'));
         $user->setOrgAdmin($request->filled('is_org_admin'));
-        $user->setOrganization($request->get('organization_id'));
+        if($request->get('organization_id') == 'set_null'){
+            $user->organization_id = null;
+            $user->save();
+        }else{
+            $user->setOrganization($request->get('organization_id'));
+        }
+
+        if($request->file !== null){
+            $user->uploadFIle($request->file);
+        }
+
         $user->generatePassword($request->get('password'));
 
         return redirect()->route('users.edit', $user->id);
@@ -78,10 +89,8 @@ class UsersController extends Controller
         $user = User::find($id);
         if (Auth::user()->is_admin){
             $organizations = Organization::pluck('title', 'id')->all();
-        }else{
-            if ($id == Auth::user()->id){
-                return redirect()->back();
-            }
+        }
+        else{
             if (!Auth::user()->is_admin && $user->is_admin){
                 return redirect()->back();
             }
@@ -106,34 +115,52 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        if (!Auth::user()->is_admin){
-            if ($id == Auth::user()->id){
-                return redirect()->back();
+        if (Auth::user()->is_admin == 1 || Auth::user()->is_org_admin == 1){
+            $this->validate($request, [
+                'name'      => 'required',
+                'email'     => 'required',
+                'phone'     => [
+                    'required',
+                    Rule::unique('users')->ignore($user->id),
+                ],
+            ]);
+    
+            $user->edit($request->all());
+            if(Auth::user()->is_admin == 1){
+                $user->setAdmin($request->filled('is_admin'));
+                $user->setStaff($request->filled('is_staff'));
+                $user->setOrgAdmin($request->filled('is_org_admin'));
+            }elseif(Auth::user()->is_org_admin == 1){
+                $user->setStaff($request->filled('is_staff'));
             }
-            if (!Auth::user()->is_admin && $user->is_admin){
-                return redirect()->back();
+
+            if($request->get('organization_id') == 'set_null'){
+                $user->organization_id = null;
+                $user->save();
+            }else{
+                $user->setOrganization($request->get('organization_id'));
             }
-            if($user->organization_id != Auth::user()->organization_id){
-                return redirect()->back();
+
+            if($request->file() !== null){
+                $user->uploadFile($request->file('file'));
             }
+
+            $user->generatePassword($request->get('password'));
+    
+            return redirect()->back();
         }
 
-        $this->validate($request, [
-            'name'      => 'required',
-            'phone'     => [
-                'required',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ]);
 
-        $user->edit($request->all());
-        $user->setAdmin($request->filled('is_admin'));
-        $user->setStaff($request->filled('is_staff'));
-        $user->setOrgAdmin($request->filled('is_org_admin'));
-        $user->setOrganization($request->get('organization_id'));
-        $user->generatePassword($request->get('password'));
+        if ($id == Auth::user()->id){
+            return redirect()->back();
+        }
+        if (!Auth::user()->is_admin && $user->is_admin){
+            return redirect()->back();
+        }
 
-        return redirect()->back();
+        if($user->organization_id != Auth::user()->organization_id){
+            return redirect()->back();
+        }
     }
 
     /**

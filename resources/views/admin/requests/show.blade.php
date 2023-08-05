@@ -161,7 +161,8 @@
                     </ul>
                     <hr>
                     <h3>Галерея</h3>
-                    @if(Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
+
+                    @if(Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || ($socialRequest->manager && Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
                     <form action="{{ route('client.requests.addFile', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" required name="file" class="form-control">
@@ -173,7 +174,7 @@
                     <div class="row">
                       @forelse($gallery as $gallery)
                       <div class="col-md-4">
-                        @if(Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
+                        @if(Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == isset($socialRequest->manager->organization_id)))
                         <form action="{{route('client.requests.destroyFileRequest', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug, 'id'=>$gallery->id])}}" method="POST">
                           @csrf
                           <input type="hidden" name="_method" value="DELETE">

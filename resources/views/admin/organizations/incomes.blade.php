@@ -51,8 +51,8 @@
                 <tbody>
                   @foreach($incomes as $income)
                   <tr>
-                    <td>{{$income->from}}</td>
-                    <td>{{$income->text}}</td>
+                    <td>{!! $income->from !!}</td>
+                    <td>{!!$income->text!!}</td>
                     <td>{{$income->amount}}</td>
                     <td><img src="{{$income->getFile()}}" style="width: 200px" alt=""></td>
                     <td>{{$income->user->name}}</td>

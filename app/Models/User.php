@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Organization;
 use App\Models\SocialRequest;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,7 +23,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'phone'
+        'phone',
+        'email'
     ];
 
     /**
@@ -93,6 +96,37 @@ class User extends Authenticatable
     {
         $this->delete();
     }
+
+    // photo
+    public function uploadFile($file)
+    {
+        // dd($file);
+        if (is_null($file)){
+            return;
+        } 
+
+        $this->removeFile();
+        $filename = Str::random(10).'.'.$file->extension();
+        $file->storeAs('uploads/users/' . $this->id, $filename);
+        $this->picture = $filename;
+        $this->save();
+    }
+
+    public function removeFile()
+    {
+        if ($this->picture !==null) {
+			Storage::delete('uploads/users/'. $this->id . '/' . $this->picture);
+		}
+    }
+
+    public function getFile()
+    {
+        if ($this->picture == null) {
+			return '/theme/img/noImage.png';
+		}
+		return '/uploads/users/' . $this->id . '/' . $this->picture;
+    }
+    // endphoto
 
     public function generatePassword($password): void
     {

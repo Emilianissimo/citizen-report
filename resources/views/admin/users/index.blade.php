@@ -23,7 +23,11 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
+              @if(Auth::user()->is_admin)
               <h3 class="card-title">Пользователи сайта</h3>
+              @elseif(Auth::user()->is_org_admin)
+              <h3 class="card-title">Работники вашей организации</h3>
+              @endif
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -48,17 +52,16 @@
                 <tbody>
                   @foreach($users as $user)
                   <tr>
-                    <td @if($user->is_admin == 1) style="color: green;font-weight: 900" title="Админ"@endif>{{$user->name}}</td>
+                    <td @if($user->is_admin == 1) style="color: green;font-weight: 900" title="Админ" @elseif(Auth::user()->name == $user->name) style="color: #a3a21b;font-weight: 900" @endif>{{$user->name}}</td>
                     <td>{{$user->phone}}</td>
                     <td id="actions">
-                      @if(Auth::user()->is_admin == 1)
+                      @if(Auth::user()->is_admin == 1 || Auth::user()->is_org_admin == 1)
                       <a style="font-size: 25px" href="{{route('users.edit', $user->id)}}" class="fa fa-edit"></a> 
-                      @if(Auth::user()->id != 1)
                       <button data-route="{{route('users.destroy', $user->id)}}" type="button" class="delete">
                         <i style="font-size: 25px" class="fa fa-trash"></i>
                       </button>
                       @endif
-                      @endif
+                      
                     </td>
                   </tr>
                   @endforeach

@@ -29,10 +29,12 @@ class Gallery extends Model
 
     public static function addRequest($file, $requestId)
     {   
+        // dd($file->getClientMimeType());
         $gallery = new self;
 
         $gallery->request_id = $requestId;
         $gallery->mime = $file->getClientMimeType();
+        
         $gallery->save();
         $gallery->uploadFile($file);
 
@@ -41,13 +43,17 @@ class Gallery extends Model
     
     public static function addPost($file, $postId)
     {
-        $gallery = new self;
-        $gallery->post_id = $postId;
-        $gallery->mime = $file->getClientMimeType();
-        $gallery->save();
-        $gallery->uploadFile($file);
+        if($file !== null && $postId !== null){
+            $gallery = new self;
+            $gallery->post_id = $postId;
+            $gallery->mime = $file->getClientMimeType();
+            $gallery->save();
+            $gallery->uploadFile($file);
 
-        return $gallery;
+            return $gallery;
+        }else{
+            return;
+        }
     }
 
     public function remove()

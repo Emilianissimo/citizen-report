@@ -27,7 +27,27 @@
 <!--================Blog Area =================-->
 <section class="blog_area single-post-area section-padding">
     <div class="container">
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center requests-parent">
+
+            @auth
+            @if($socialRequest->author_id == Auth::user()->id || Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
+            <div class="col-md-4">
+                <div class="blog_right_sidebar"style="position:sticky !important;top:150px;">
+                    <aside class="single_sidebar_widget post_category_widget">
+                        <form action="{{ route('client.requests.addFile', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <h4 class="widget_title">{{__('Добавить медиа')}}</h4>
+                            <div class="p-3">
+                                <input type="file" required name="file" class="form-control">
+                                <sub>PNG, JPEG, JPG, MP4</sub>
+                            </div>
+                            <button class="w-100 btn btn-success">{{__('Добавить')}}</button>
+                        </form>
+                    </aside>
+                </div>
+            </div>
+            @endif
+            @endauth
 
         <div class="col-md-8 posts-list">
 
@@ -152,12 +172,14 @@
                         <!-- <div class="thumb">
                             <img src="img/comment/comment_1.png" alt="">
                         </div> -->
+                        @if(Auth::user())
                         @if(Auth::user()->is_admin || Auth::user()->id == $comment->user_id)
                         <form action="{{route('client.requests.comment.destroy', ['locale'=> app()->getLocale(),'slug' => $socialRequest->slug, 'id' => $comment->id])}}" method="POST" class="mr-3">
                             @csrf
                             <input type="hidden" name="_method" value="DELETE">
                             <button class="btn btn-outline-danger" style="height: 100%;"><i class="fa fa-trash"></i></button>
                         </form>
+                        @endif
                         @endif
                         <div class="desc">
                             <p class="comment">
@@ -194,25 +216,7 @@
             </div>
             @endif
         </div>
-        @auth
-        @if($socialRequest->author_id == Auth::user()->id || Auth::user()->is_admin || Auth::user()->id == $socialRequest->manager_id || (Auth::user()->is_org_admin && Auth::user()->organization_id == $socialRequest->manager->organization_id))
-        <div class="col-md-4">
-            <div class="blog_right_sidebar"style="position:sticky !important;top:150px;">
-                <aside class="single_sidebar_widget post_category_widget">
-                    <form action="{{ route('client.requests.addFile', ['locale'=>app()->getLocale(), 'slug'=>$socialRequest->slug]) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <h4 class="widget_title">{{__('Добавить медиа')}}</h4>
-                        <div class="p-3">
-                            <input type="file" required name="file" class="form-control">
-                            <sub>PNG, JPEG, JPG, MP4</sub>
-                        </div>
-                        <button class="w-100 btn btn-success">{{__('Добавить')}}</button>
-                    </form>
-                </aside>
-            </div>
-        </div>
-        @endif
-        @endauth
+
         </div>
     </div>
 </section>

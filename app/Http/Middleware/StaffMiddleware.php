@@ -25,6 +25,9 @@ class StaffMiddleware
             if(Auth::user()->is_admin || Auth::user()->is_staff){
                 return $next($request);
             }
+            if(Auth::user()->is_admin || Auth::user()->is_org_admin){
+                return $next($request);
+            }
             abort(403);
         }
         return redirect(route('dashboard.login'));

@@ -1,16 +1,20 @@
 start:
-	docker-compose up -d
+	sudo docker-compose up -d
 down:
-	docker-compose down
+	sudo docker-compose down
 stop:
-	docker-compose stop
+	sudo docker-compose stop
 build:
-	docker-compose up --build
+	sudo docker-compose up --build
 mysql-bash:
-	docker exec -it ds_citizen_mysql bash
+	sudo docker exec -it ds_citizen_mysql bash
 php-bash:
-	docker exec -it ds_citizen_php bash
+	sudo docker exec -it ds_citizen_php bash
 nginx-bash:
-	docker exec -it ds_citizen_nginx bash
+	sudo docker exec -it ds_citizen_nginx bash
 migrate:
-	docker exec -it ds_citizen_php php artisan migrate
+	sudo docker exec -it ds_citizen_php php artisan migrate
+setup: 
+	sudo docker exec -it ds_citizen_php composer install --prefer-dist
+	make migrate
+

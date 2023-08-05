@@ -57,7 +57,7 @@
                     <input type="text" class="form-control" id="address" placeholder="" value="{{$organization->address}}" name="address">
                   </div>
                   <div class="form-group">
-                    <label for="phone">Доп. инфо</label>
+                    <label for="info">Доп. инфо</label>
                     <textarea name="info" id="" cols="30" rows="10">{{$organization->info}}</textarea>
                   </div>
               </div>

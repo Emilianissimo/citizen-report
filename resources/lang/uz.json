@@ -56,6 +56,7 @@
     "Статус": "Holat",
     "Поиск": "Izlash",
     "Категории": "Kategoriyalar",
+    "Регионы":"Regionlar",
     "Статусы": "Holatlar",
     "Срочность": "Shoshilinchlik",
     "Удалить": "Xotiradan o'chirish",
@@ -81,8 +82,36 @@
     "Добавить": "",
     "Отчет": "",
     "Отчета пока нет": "",
-    "Новости": "",
+
+    "Новости": "Yangiliklar",
     "Доходы": "",
-    "Расходы": "",
-    "Организация": ""
+    "Организация": "",
+    "Лента":"Postlar",
+    "Приходы":"Kirimlar",
+    "Расходы":"Chiqimlar",
+    "Название":"Ism",
+    "Город":"Shahar",
+    "Реквизиты":"Rekvizitlar",
+    "Номер карты":"Karta raqami",
+    "Дата":"Sana",
+    "Категория":"Kategoriya",
+    "Важность":"Muhimligi",
+    "Заявитель":"Ariza beruvchi",
+    "Ссылка":"Havola",
+    "Перейти":"O'tish",
+    "Лента постов":"Postlar lentasi",
+    "Пусто":"Bo'sh",
+
+    "Настройки":"Sozlamalar",
+    "Настройки профиля":"Profil sozlamalari",
+    "Ваши задачи":"Sizning vazifalaringiz",
+    "Супер админ":"Super admin",
+    "Админ":"Admin",
+    "Пользователь":"Foydalanuvchi",
+    "Сотрудник":"Xodim",
+    "Изменить":"O'zgartirish",
+    "Фото":"Foto"
+
+
+
 }

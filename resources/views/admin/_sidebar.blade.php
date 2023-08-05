@@ -12,7 +12,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('social_requests.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'requests.')) active @endif">
+            <a href="{{route('social_requests.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'social_requests.')) active @endif">
               <i class="nav-icon fa fa-user-plus"></i>
               <p>
                 <b>Обращения</b>
@@ -57,6 +57,34 @@
               <i class="nav-icon fa fa-users"></i>
               <p>
                 Пользователи
+              </p>
+            </a>
+          </li>
+          @endif
+          @if(Auth::user()->is_org_admin)
+          <li class="nav-item">
+            <a href="{{route('users.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'users.')) active @endif">
+              <i class="nav-icon fa fa-users"></i>
+              <p>
+                Пользователи
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{route('posts.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'posts.')) active @endif">
+              <i class="nav-icon fa fa-users"></i>
+              <p>
+                Посты
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{route('finances.index')}}" class="nav-link @if(Str::startsWith(Route::currentRouteName(), 'finances.')) active @endif">
+              <i class="nav-icon fa fa-users"></i>
+              <p>
+                Донаты
               </p>
             </a>
           </li>

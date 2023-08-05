@@ -81,7 +81,7 @@
         </button>
       </div>
       <div class="modal-body">
-        {{__('Напишите и мы вам поможем')}}: <a href="https://t.me/gototheforest"></a>
+        {{__('Напишите и мы вам поможем')}}: <a href="https://t.me/gototheforest">сюда</a>
         <p><b>{{__('Обещаем в будущем сделать вход по СМС')}}</b></p>
       </div>
     </div>

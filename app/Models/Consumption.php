@@ -63,23 +63,22 @@ class Consumption extends Model
         $this->removeFile();
         $filename = Str::random(10).'.'.$file->extension();
         $file->storeAs('uploads/consumptions/' . $this->id, $filename);
-        $this->file = $filename;
-        $this->mime = $file->getClientMimeType();
+        $this->picture = $filename;
         $this->save();
     }
 
     public function removeFile()
     {
-        if ($this->file !=null) {
-			Storage::delete('uploads/consumptions/'. $this->id . '/' . $this->file);
+        if ($this->picture !=null) {
+			Storage::delete('uploads/consumptions/'. $this->id . '/' . $this->picture);
 		}
     }
 
     public function getFile()
     {
-        if ($this->file == null) {
+        if ($this->picture == null) {
 			return '/img/no-image.png';
 		}
-		return '/uploads/consumptions/' . $this->id . '/' . $this->file;
+		return '/uploads/consumptions/' . $this->id . '/' . $this->picture;
     }
 }

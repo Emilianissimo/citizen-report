@@ -89,7 +89,7 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a  href="/">{{__('Главная')}}</a></li>
+                                        <li><a  href="{{route('client.index', app()->getLocale())}}">{{__('Главная')}}</a></li>
                                         <li><a href="{{route('client.requests.index', app()->getLocale())}}">{{__('Заявки')}}</a></li>
                                         <li><a href="{{route('client.organizations.index', app()->getLocale())}}">{{__('Приюты')}}</a></li>
                                         @guest
@@ -99,7 +99,7 @@
                                         @if(Auth::user()->is_admin || Auth::user()->is_staff || Auth::user()->is_org_admin)
                                         <li><a href="{{route('dashboard')}}">Admin</a></li>
                                         @endif
-                                        <li><a href="{{route('client.profile', app()->getLocale())}}">{{__('Профиль')}}</a></li>
+                                        <li><a href="{{route('client.profile.index',['locale'=>app()->getLocale(), 'id'=>Auth::user()->id])}}">{{__('Профиль')}}</a></li>
                                         <li>
                                             <form action="{{route('logout')}}" method="POST">
                                                 @csrf
@@ -289,6 +289,7 @@
 
 
     </script>
+    @stack('scripts')
 
 </body>
 

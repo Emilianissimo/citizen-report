@@ -31,8 +31,8 @@
                 <div>
                     <a href="{{route('client.requests.show', ['locale'=>app()->getLocale(), 'slug'=>$req->slug])}}">
                         <div class="card mb-3 p-2">
-                            <div class="d-flex profile-card">
-                                <div class="" style="padding: 1.25rem 0">
+                            <div class="d-flex request-card">
+                                <div class="card-image" style="padding: 1.25rem 0">
                                     <img style="width: 200px; height: 10rem;object-fit:cover;object-position: center center;" src="{{$req->firstPic()}}" class="card-img" alt="Изображение">
                                 </div>
                                 <div class="col-md-8">
