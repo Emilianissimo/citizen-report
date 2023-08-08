@@ -74,7 +74,7 @@
                   </div>
                   @endif
                   <div class="form-group">
-                      <label>Подопечные регионы</label>
+                      <label>Назначить приют</label>
                       <select name="organization_id" class="form-control select2" data-placeholder="Выберите организацию">
                           <option value="set_null">пусто</option>
                           @if(Auth::user()->is_org_admin)

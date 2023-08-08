@@ -22,13 +22,13 @@ class ProfilesController extends Controller
         $organization = null;
         if($user->organization_id){
             $organization = Organization::findOrFail($user->organization_id);
-            $requests = $user->socialRequestsAsManager()->paginate(3);
-            $posts = Post::where('organization_id',$organization->id)->orderBy('created_at','DESC')->paginate(3);
+            $requests = $user->socialRequestsAsManager()->paginate(8);
+            $posts = Post::where('organization_id',$organization->id)->orderBy('created_at','DESC')->paginate(8);
             // dd($requests);
         }
         else{
             if($user->socialRequestsAsAuthor !== 0){
-                $requests = $user->socialRequestsAsAuthor()->paginate(3);
+                $requests = $user->socialRequestsAsAuthor()->paginate(8);
             }
         };
 
@@ -42,12 +42,12 @@ class ProfilesController extends Controller
         $organization = null;
         if($user->organization_id){
             $organization = Organization::findOrFail($user->organization_id);
-            $requests = $user->socialRequestsAsManager()->paginate(3);
-            $posts = Post::where('organization_id',$organization->id)->orderBy('created_at','DESC')->paginate(3);
+            $requests = $user->socialRequestsAsManager()->paginate(8);
+            $posts = Post::where('organization_id',$organization->id)->orderBy('created_at','DESC')->paginate(8);
         }
         else{
             if($user->socialRequestsAsAuthor !== 0){
-                $requests = $user->socialRequestsAsAuthor()->paginate(3);
+                $requests = $user->socialRequestsAsAuthor()->paginate(8);
             }
         };
 

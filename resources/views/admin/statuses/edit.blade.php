@@ -43,7 +43,7 @@
                   </div>
                   <div class="form-group">
                     <label for="color">Цвет</label>
-                    <input type="text" class="form-control" id="color" placeholder="" value="{{$status->color)}}" name="color">
+                    <input type="text" class="form-control" id="color" placeholder="" value="{{$status->color}}" name="color">
                   </div>
               </div>
              

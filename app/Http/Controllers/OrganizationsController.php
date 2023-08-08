@@ -30,10 +30,10 @@ class OrganizationsController extends Controller
     public function posts($lang, $id)
     {
         $organization = Organization::findOrFail($id);
-        $posts = $organization->posts()->orderBy('created_at', "DESC")->paginate(1);
-        $incomes = $organization->incomes()->orderBy('created_at', "DESC")->paginate(1);
-        $consumptions = $organization->consumptions()->orderBy('created_at', "DESC")->paginate(1);
-        $requests = SocialRequest::whereHas('manager.organization')->orderBy('created_at', "DESC")->paginate(1);
+        $posts = $organization->posts()->orderBy('created_at', "DESC")->paginate(8);
+        $incomes = $organization->incomes()->orderBy('created_at', "DESC")->paginate(8);
+        $consumptions = $organization->consumptions()->orderBy('created_at', "DESC")->paginate(8);
+        $requests = SocialRequest::whereHas('manager.organization')->orderBy('created_at', "DESC")->paginate(8);
         // dd($requests);
 
         return view('pages.organizations.posts', compact(
@@ -48,7 +48,7 @@ class OrganizationsController extends Controller
     public function getIncomes($lang, $id)
     {
         $organization = Organization::findOrFail($id);
-        $incomes = $organization->incomes()->orderBy('created_at', "DESC")->paginate(1);
+        $incomes = $organization->incomes()->orderBy('created_at', "DESC")->paginate(8);
 
         return view('pages.organizations.incomes', compact(
             'organization',
@@ -59,7 +59,7 @@ class OrganizationsController extends Controller
     public function getConsumptions($lang, $id)
     {
         $organization = Organization::findOrFail($id);
-        $consumptions = $organization->consumptions()->orderBy('created_at', "DESC")->paginate(1);
+        $consumptions = $organization->consumptions()->orderBy('created_at', "DESC")->paginate(8);
 
         return view('pages.organizations.consumptions', compact(
             'organization',
@@ -70,7 +70,11 @@ class OrganizationsController extends Controller
     public function getRequests($lang, $id)
     {
         $organization = Organization::findOrFail($id);
-        $requests = SocialRequest::whereHas('manager.organization')->orderBy('created_at', "DESC")->paginate(1);
+        // $requests = SocialRequest::whereHas('manager.organization')->orderBy('created_at', "DESC")->paginate(1);
+
+        $requests = SocialRequest::whereHas('manager', function ($query) use ($organization) {
+            $query->where('organization_id', $organization->id);
+        })->orderBy('created_at', 'DESC')->paginate(10);
 
         return view('pages.organizations.requests', compact(
             'organization',
